@@ -3,234 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SincroTask Pro | Ultimate Workspace</title>
+    <title>SincroTask Pro X | The Ultimate TICS Workspace</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-        }
-
-        .task-done {
-            text-decoration: line-through;
-            opacity: 0.6;
-            filter: grayscale(1);
-        }
-
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        :root { --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); --accent: #3b82f6; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0b1120; color: #f1f5f9; overflow-x: hidden; }
+        .fancy-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background-image: radial-gradient(at 10% 10%, rgba(59, 130, 246, 0.15) 0px, transparent 50%), radial-gradient(at 90% 10%, rgba(168, 85, 247, 0.15) 0px, transparent 50%), radial-gradient(at 50% 90%, rgba(236, 72, 153, 0.1) 0px, transparent 50%); }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-dark { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.04); }
+        .nav-link { transition: all 0.3s ease; position: relative; }
+        .nav-link.active { background: rgba(59, 130, 246, 0.2); color: white; border-left: 3px solid var(--accent); }
+        .task-item { animation: taskIn 0.4s ease-out forwards; }
+        .task-done { opacity: 0.5; text-decoration: line-through; filter: grayscale(1); }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .tag-work { background: #3b82f6; }
+        .tag-urgent { background: #ef4444; }
+        .tag-idea { background: #10b981; }
+        #auth-screen { transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+        #app-screen { display: none; opacity: 0; transition: opacity 0.5s ease; }
+        .app-visible { display: flex !important; opacity: 1 !important; }
+        .auth-hidden { transform: scale(0.8) translateY(-100vh); opacity: 0; pointer-events: none; }
+        @keyframes taskIn { 0% { opacity: 0; transform: translateY(20px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-6">
+<body class="min-h-screen">
+    <div class="fancy-bg"></div>
 
-    <div class="w-full max-w-2xl animate__animated animate__fadeIn">
-        
-        <div class="grid grid-cols-3 gap-4 mb-6">
-            <div class="glass-card p-4 rounded-3xl text-center shadow-xl">
-                <p class="text-[10px] font-bold uppercase text-blue-600">Total</p>
-                <h3 id="totalTasks" class="text-2xl font-bold text-gray-800">0</h3>
-            </div>
-            <div class="glass-card p-4 rounded-3xl text-center shadow-xl">
-                <p class="text-[10px] font-bold uppercase text-green-600">Completas</p>
-                <h3 id="completedTasks" class="text-2xl font-bold text-gray-800">0</h3>
-            </div>
-            <div class="glass-card p-4 rounded-3xl text-center shadow-xl">
-                <p class="text-[10px] font-bold uppercase text-purple-600">Progreso</p>
-                <h3 id="progressPercent" class="text-2xl font-bold text-gray-800">0%</h3>
-            </div>
-        </div>
-
-        <div class="glass-card rounded-[2.5rem] shadow-2xl overflow-hidden border-none">
-            
-            <div class="p-8 bg-white/40 border-b border-white/20">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Lista de Pendientes</h1>
-                            <span class="px-2 py-0.5 bg-black text-white text-[10px] rounded-full font-bold">PRO</span>
-                        </div>
-                        <p class="text-gray-500 text-sm mt-1 flex items-center gap-1">
-                            <i data-lucide="zap" class="w-3 h-3 text-yellow-500 fill-yellow-500"></i>
-                            Potenciando tu flujo de trabajo
-                        </p>
-                    </div>
-                    <div class="h-14 w-14 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-0 transition-transform cursor-pointer">
-                        <i data-lucide="layers" class="text-white"></i>
-                    </div>
+    <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="glass w-full max-w-lg rounded-3xl p-10 shadow-2xl shadow-blue-900/20 animate__animated animate__zoomIn">
+            <div class="text-center mb-10">
+                <div class="h-20 w-20 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-3xl flex items-center justify-center shadow-lg shadow-blue-500/30 mx-auto mb-6 transform rotate-6">
+                    <i data-lucide="shield-check" class="text-white w-10 h-10"></i>
+                </div>
+                <h1 class="text-4xl font-extrabold text-white tracking-tighter">SincroTask <span class="text-blue-500">Pro X</span></h1>
+                <p class="text-gray-400 mt-2">Ingresa a tu TICS Workspace Seguro</p>
+                <div class="bg-blue-950/50 text-blue-300 text-xs p-3 rounded-xl mt-4 border border-blue-800">
+                    User: <span class="font-mono text-white">admin@tics.com</span> | Pass: <span class="font-mono text-white">sincro123</span>
                 </div>
             </div>
-
-            <div class="p-8 pb-4">
-                <div class="relative group">
-                    <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                        <i data-lucide="plus-circle" class="w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors"></i>
-                    </div>
-                    <input type="text" id="taskInput" onkeypress="handleKeyPress(event)" placeholder="¿Qué vamos a lograr hoy?" 
-                        class="w-full pl-12 pr-32 py-5 bg-white/50 border-2 border-transparent focus:border-blue-400/50 rounded-2xl focus:ring-0 transition-all outline-none text-gray-700 placeholder-gray-400 shadow-inner">
-                    <button onclick="addTask()" class="absolute right-2.5 top-2.5 bottom-2.5 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all active:scale-95 flex items-center gap-2 shadow-lg shadow-blue-200">
-                        Añadir
-                    </button>
+            <form onsubmit="handleLogin(event)" class="space-y-6">
+                <div class="relative">
+                    <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+                    <input type="email" id="loginEmail" required placeholder="Correo electrónico" class="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl outline-none text-white">
                 </div>
-            </div>
-
-            <ul id="taskList" class="p-8 pt-4 space-y-4 max-h-[400px] overflow-y-auto custom-scrollbar min-h-[200px]">
-                <div id="emptyState" class="text-center py-12 animate__animated animate__fadeIn">
-                    <div class="w-20 h-20 bg-blue-100/50 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white">
-                        <i data-lucide="clipboard-list" class="w-10 h-10 text-blue-400"></i>
-                    </div>
-                    <h4 class="text-gray-800 font-semibold">Bandeja de entrada limpia</h4>
-                    <p class="text-gray-500 text-sm">No tienes tareas para este momento.</p>
+                <div class="relative">
+                    <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+                    <input type="password" id="loginPassword" required placeholder="Contraseña" class="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl outline-none text-white">
                 </div>
-            </ul>
-
-            <div class="px-8 py-5 bg-white/30 flex justify-between items-center border-t border-white/20">
-                <div class="flex items-center gap-3">
-                    <div class="relative">
-                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                        <div class="absolute inset-0 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-                    </div>
-                    <span class="text-xs font-bold text-gray-600 uppercase tracking-tighter">Live Sync Engine</span>
-                </div>
-                <button onclick="clearCompleted()" class="text-xs font-bold text-red-500 hover:text-red-700 transition-colors uppercase">Limpiar completadas</button>
-            </div>
+                <button type="submit" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3">
+                    <i data-lucide="log-in" class="w-5 h-5"></i> Iniciar Sesión
+                </button>
+            </form>
         </div>
     </div>
 
-    <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-  // Configuración de tu proyecto (Copiado de tu captura)
-  const firebaseConfig = {
-    apiKey: "AIzaSyDGh_Pesf7zkQF5yLe0Jhd6lapZodO6bnE",
-    authDomain: "pendientes-jose.firebaseapp.com",
-    projectId: "pendientes-jose",
-    storageBucket: "pendientes-jose.firebasestorage.app",
-    messagingSenderId: "360524230213",
-    appId: "1:360524230213:web:b8dac50761aed5feec3d2c",
-    databaseURL: "https://pendientes-jose-default-rtdb.firebaseio.com/" 
-  };
-
-  // Inicializar Firebase
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
-  const tasksRef = ref(database, 'tasks');
-
-  // Inicializar iconos de Lucide
-  lucide.createIcons();
-
-  let tasks = [];
-
-  // --- ESCUCHAR CAMBIOS (SINCRONIZACIÓN) ---
-  onValue(tasksRef, (snapshot) => {
-    const data = snapshot.val();
-    const list = document.getElementById('taskList');
-    list.innerHTML = ""; 
-    tasks = [];
-
-    if (data) {
-      Object.keys(data).forEach(id => {
-        const task = { id, ...data[id] };
-        tasks.push(task);
-        renderTask(task);
-      });
-    }
-    updateStats();
-    lucide.createIcons(); // Refrescar iconos
-  });
-
-  // --- FUNCIONES GLOBALES ---
-  window.handleKeyPress = (e) => {
-    if (e.key === 'Enter') addTask();
-  };
-
-  window.addTask = () => {
-    const input = document.getElementById('taskInput');
-    const text = input.value.trim();
-    if (text === "") return;
-
-    push(tasksRef, {
-      text: text,
-      done: false
-    });
-    input.value = "";
-  };
-
-  window.toggleTask = (id) => {
-    const task = tasks.find(t => t.id === id);
-    const taskRef = ref(database, `tasks/${id}`);
-    update(taskRef, { done: !task.done });
-  };
-
-  window.deleteTask = (id) => {
-    const taskRef = ref(database, `tasks/${id}`);
-    remove(taskRef);
-  };
-
-  window.clearCompleted = () => {
-    const completed = tasks.filter(t => t.done);
-    completed.forEach(t => {
-      const taskRef = ref(database, `tasks/${t.id}`);
-      remove(taskRef);
-    });
-  };
-
-  // --- RENDERIZADO Y ESTADÍSTICAS ---
-  function renderTask(task) {
-    const list = document.getElementById('taskList');
-    const li = document.createElement('li');
-    li.id = `task-${task.id}`;
-    li.className = `flex items-center justify-between p-4 bg-white/80 rounded-2xl border border-white shadow-sm hover:shadow-md transition-all group animate__animated animate__fadeInRight`;
-    
-    li.innerHTML = `
-        <div class="flex items-center gap-4 flex-1 cursor-pointer" onclick="toggleTask('${task.id}')">
-            <div class="flex items-center justify-center w-6 h-6 border-2 ${task.done ? 'bg-blue-600 border-blue-600' : 'border-blue-200'} rounded-lg transition-colors">
-                <i data-lucide="check" class="w-4 h-4 text-white ${task.done ? '' : 'hidden'}"></i>
+    <div id="app-screen" class="h-screen w-full flex overflow-hidden">
+        <aside class="w-72 glass-dark border-r border-white/5 flex flex-col p-6 animate__animated animate__slideInLeft">
+            <div class="flex items-center gap-3 mb-12">
+                <div class="h-10 w-10 bg-blue-600 rounded-xl flex items-center justify-center"><i data-lucide="layers" class="text-white w-5 h-5"></i></div>
+                <span class="text-xl font-bold text-white">SincroTask <span class="text-blue-500 text-sm font-medium">X</span></span>
             </div>
-            <span class="text-gray-700 font-medium ${task.done ? 'task-done' : ''}">${task.text}</span>
-        </div>
-        <button onclick="deleteTask('${task.id}')" class="p-2 text-gray-300 hover:text-red-500 transition-all">
-            <i data-lucide="trash-2" class="w-5 h-5"></i>
-        </button>
-    `;
-    list.appendChild(li);
-  }
+            <nav class="space-y-3 flex-1">
+                <a href="#" class="nav-link active flex items-center gap-3.5 p-4 rounded-xl text-gray-300"><i data-lucide="layout-grid" class="w-5 h-5"></i> Dashboard</a>
+                <button onclick="handleLogout()" class="w-full mt-10 text-sm text-red-400 hover:text-red-300 flex items-center gap-1.5 p-4"><i data-lucide="log-out" class="w-4 h-4"></i> Salir</button>
+            </nav>
+        </aside>
 
-  function updateStats() {
-    const total = tasks.length;
-    const completed = tasks.filter(t => t.done).length;
-    const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+        <main class="flex-1 flex flex-col h-screen">
+            <header class="h-20 glass border-b border-white/5 px-8 flex items-center justify-between">
+                <div class="relative w-96">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+                    <input type="text" onkeyup="searchTasks(this.value)" placeholder="Buscar tarea..." class="w-full pl-12 pr-4 py-2.5 bg-gray-900 rounded-xl border border-gray-700 text-gray-300 outline-none">
+                </div>
+                <div class="flex items-center gap-3">
+                    <img id="userAvatar" src="" alt="Avatar" class="h-10 w-10 rounded-full bg-blue-100 border-2 border-white/10">
+                    <span id="userName" class="text-sm font-semibold text-white">Admin</span>
+                </div>
+            </header>
 
-    document.getElementById('totalTasks').innerText = total;
-    document.getElementById('completedTasks').innerText = completed;
-    document.getElementById('progressPercent').innerText = `${percent}%`;
-    
-    const emptyState = document.getElementById('emptyState');
-    if (total > 0) {
-        if (emptyState) emptyState.style.display = 'none';
-    } else {
-        if (emptyState) emptyState.style.display = 'block';
-    }
-  }
-  
-</script>
+            <div class="flex-1 p-8 overflow-y-auto custom-scroll animate__animated animate__fadeIn">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-white">Bienvenido, <span id="welcomeName">José</span> 👋</h2>
+                        <p class="text-gray-400 mt-1">Cloud Sync Status: <span class="text-green-500">Connected</span></p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="glass p-6 rounded-3xl flex items-center gap-5">
+                        <div class="h-14 w-14 bg-yellow-950/50 rounded-full flex items-center justify-center text-yellow-400"><i data-lucide="clock-3" class="w-7 h-7"></i></div>
+                        <div><p class="text-xs text-gray-400 uppercase font-bold">Pendientes</p><h3 id="statPending" class="text-3xl font-extrabold text-white">0</h3></div>
+                    </div>
+                    <div class="glass p-6 rounded-3xl flex items-center gap-5">
+                        <div class="h-14 w-14 bg-green-950/50 rounded-full flex items-center justify-center text-green-400"><i data-lucide="check-circle-2" class="w-7 h-7"></i></div>
+                        <div><p class="text-xs text-gray-400 uppercase font-bold">Hechas</p><h3 id="statDone" class="text-3xl font-extrabold text-white">0</h3></div>
+                    </div>
+                    <div class="glass p-6 rounded-3xl flex items-center gap-5">
+                        <div class="h-14 w-14 bg-purple-950/50 rounded-full flex items-center justify-center text-purple-400"><i data-lucide="award" class="w-7 h-7"></i></div>
+                        <div><p class="text-xs text-gray-400 uppercase font-bold">Eficiencia</p><h3 id="statEfficiency" class="text-3xl font-extrabold text-white">0%</h3></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                    <div class="xl:col-span-1 glass p-7 rounded-3xl h-fit">
+                        <h4 class="text-lg font-bold text-white mb-5 flex items-center gap-2"><i data-lucide="pen-tool" class="w-5 h-5 text-blue-500"></i> Añadir Objetivo</h4>
+                        <input type="text" id="taskInput" placeholder="Ej: Proyecto Digital Animation..." class="w-full p-4 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none mb-4">
+                        <div class="grid grid-cols-3 gap-2 mb-6">
+                            <button onclick="setActiveTag('work', this)" class="tag-btn tag-work text-[10px] text-white font-bold p-2 rounded-lg opacity-100" data-tag="work">TRABAJO</button>
+                            <button onclick="setActiveTag('urgent', this)" class="tag-btn tag-urgent text-[10px] text-white font-bold p-2 rounded-lg opacity-50" data-tag="urgent">URGENTE</button>
+                            <button onclick="setActiveTag('idea', this)" class="tag-btn tag-idea text-[10px] text-white font-bold p-2 rounded-lg opacity-50" data-tag="idea">IDEA</button>
+                        </div>
+                        <button onclick="addTask()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2">
+                            <i data-lucide="plus-circle" class="w-5 h-5"></i> Crear Tarea
+                        </button>
+                    </div>
+
+                    <div class="xl:col-span-2 glass p-7 rounded-3xl">
+                        <h4 class="text-lg font-bold text-white mb-6">Mi Flujo de Trabajo (Realtime)</h4>
+                        <ul id="taskList" class="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scroll">
+                            </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // CONFIGURACIÓN DE TU FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyDGh_Pesf7zkQF5yle0Jhd6lapZod06bnE",
+            authDomain: "pendientes-jose.firebaseapp.com",
+            projectId: "pendientes-jose",
+            storageBucket: "pendientes-jose.firebasestorage.app",
+            messagingSenderId: "36052420213",
+            appId: "1:36052420213:web:b8dac50761aed5feec3d2c",
+            databaseURL: "https://pendientes-jose-default-rtdb.firebaseio.com"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const tasksRef = ref(db, 'tareas');
+
+        let currentTag = 'work';
+        let tasksData = {};
+
+        // 1. ESCUCHAR CAMBIOS (REALTIME)
+        onValue(tasksRef, (snapshot) => {
+            const list = document.getElementById('taskList');
+            list.innerHTML = "";
+            tasksData = snapshot.val() || {};
+            
+            Object.keys(tasksData).reverse().forEach(id => {
+                renderTask(id, tasksData[id]);
+            });
+            updateStats();
+            lucide.createIcons();
+        });
+
+        // 2. AÑADIR TAREA
+        window.addTask = function() {
+            const input = document.getElementById('taskInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            push(tasksRef, {
+                text: text,
+                done: false,
+                tag: currentTag,
+                timestamp: Date.now()
+            });
+
+            input.value = "";
+            input.focus();
+        };
+
+        // 3. RENDERIZAR TAREA
+        function renderTask(id, task) {
+            const list = document.getElementById('taskList');
+            const li = document.createElement('li');
+            li.className = `task-item glass-dark p-5 rounded-2xl flex items-center justify-between group ${task.done ? 'task-done' : ''}`;
+            
+            const tags = {
+                work: { color: 'tag-work', icon: 'briefcase', label: 'Trabajo' },
+                urgent: { color: 'tag-urgent', icon: 'zap', label: 'Urgente' },
+                idea: { color: 'tag-idea', icon: 'lightbulb', label: 'Idea' }
+            };
+            const t = tags[task.tag];
+
+            li.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleTask('${id}', ${task.done})" class="w-6 h-6 border-2 border-gray-600 rounded-lg bg-gray-900 flex items-center justify-center">
+                        <i data-lucide="check" class="w-4 h-4 text-blue-500 ${task.done ? '' : 'hidden'}"></i>
+                    </button>
+                    <div>
+                        <span class="text-white font-medium">${task.text}</span>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="${t.color} text-[8px] font-bold px-1.5 py-0.5 rounded text-white uppercase">${t.label}</span>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="deleteTask('${id}')" class="opacity-0 group-hover:opacity-100 p-2 text-red-500 hover:bg-red-900/20 rounded-lg transition-all">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+            `;
+            list.appendChild(li);
+        }
+
+        // 4. ACCIONES (WINDOW para que funcionen con onclick)
+        window.toggleTask = (id, currentStatus) => {
+            update(ref(db, `tareas/${id}`), { done: !currentStatus });
+        };
+
+        window.deleteTask = (id) => {
+            if(confirm("¿Eliminar tarea?")) remove(ref(db, `tareas/${id}`));
+        };
+
+        window.setActiveTag = (tag, btn) => {
+            currentTag = tag;
+            document.querySelectorAll('.tag-btn').forEach(b => b.classList.add('opacity-50'));
+            btn.classList.remove('opacity-50');
+            btn.classList.add('opacity-100');
+        };
+
+        function updateStats() {
+            const keys = Object.keys(tasksData);
+            const total = keys.length;
+            const done = keys.filter(k => tasksData[k].done).length;
+            const pending = total - done;
+            const eff = total === 0 ? 0 : Math.round((done / total) * 100);
+
+            document.getElementById('statPending').innerText = pending;
+            document.getElementById('statDone').innerText = done;
+            document.getElementById('statEfficiency').innerText = eff + "%";
+        }
+    </script>
+
+    <script>
+        // Lógica de UI (Login)
+        lucide.createIcons();
+        function handleLogin(e) {
+            e.preventDefault();
+            if(document.getElementById('loginPassword').value === 'sincro123') {
+                document.getElementById('auth-screen').classList.add('auth-hidden');
+                setTimeout(() => {
+                    document.getElementById('app-screen').classList.add('app-visible');
+                    document.getElementById('userName').innerText = "José Admin";
+                    document.getElementById('userAvatar').src = "https://api.dicebear.com/8.x/notionists/svg?seed=Jose";
+                }, 400);
+            } else { alert("Error en contraseña"); }
+        }
+        function handleLogout() { location.reload(); }
+    </script>
 </body>
 </html>
