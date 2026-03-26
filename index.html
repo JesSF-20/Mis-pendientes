@@ -3,42 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SincroTask | The Ultimate TICS Workspace</title>
+    <title>SincroTask | TICS Workspace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        :root { --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); --accent: #3b82f6; }
+        :root { --accent: #3b82f6; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0b1120; color: #f1f5f9; overflow-x: hidden; }
-        .fancy-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background-image: radial-gradient(at 10% 10%, rgba(59, 130, 246, 0.15) 0px, transparent 50%), radial-gradient(at 90% 10%, rgba(168, 85, 247, 0.15) 0px, transparent 50%), radial-gradient(at 50% 90%, rgba(236, 72, 153, 0.1) 0px, transparent 50%); }
+        .fancy-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background-image: radial-gradient(at 10% 10%, rgba(59, 130, 246, 0.15) 0px, transparent 50%), radial-gradient(at 90% 10%, rgba(168, 85, 247, 0.15) 0px, transparent 50%); }
         .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .glass-dark { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.04); }
-        .nav-link { transition: all 0.3s ease; position: relative; }
-        .nav-link.active { background: rgba(59, 130, 246, 0.2); color: white; border-left: 3px solid var(--accent); }
-        .task-item { animation: taskIn 0.4s ease-out forwards; transition: all 0.3s ease-out; }
-        .task-done { opacity: 0.5; text-decoration: line-through; filter: grayscale(1); background: rgba(100,100,100,0.1) !important; border-color: rgba(255,255,255,0.02) !important; }
-        .custom-scroll::-webkit-scrollbar { width: 6px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        .tag-work { background: #3b82f6; }
-        .tag-urgent { background: #ef4444; }
-        .tag-idea { background: #10b981; }
-        #auth-screen { transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+        
+        /* NUEVA ANIMACIÓN: FLOATING GLOW */
+        .logo-floating {
+            animation: floatingGlow 5s ease-in-out infinite;
+        }
+
+        @keyframes floatingGlow {
+            0% { 
+                transform: translateY(0px) rotate(0deg); 
+                filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.2));
+            }
+            50% { 
+                transform: translateY(-15px) rotate(1deg); 
+                filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.6));
+            }
+            100% { 
+                transform: translateY(0px) rotate(0deg); 
+                filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.2));
+            }
+        }
+
+        #auth-screen { transition: all 0.6s ease; }
+        .auth-hidden { transform: translateY(-100vh); opacity: 0; }
         #app-screen { display: none; opacity: 0; transition: opacity 0.5s ease; }
         .app-visible { display: flex !important; opacity: 1 !important; }
-        .auth-hidden { transform: scale(0.8) translateY(-100vh); opacity: 0; pointer-events: none; }
-        @keyframes taskIn { 0% { opacity: 0; transform: translateY(20px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
-        
-        /* ANIMACIÓN DE PALPITO SUAVE PARA EL LOGO */
-        .logo-pulse {
-            animation: pulseSoft 4s infinite;
-        }
-        @keyframes pulseSoft {
-            0% { transform: scale(1) rotate(3deg); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-            50% { transform: scale(1.05) rotate(5deg); box-shadow: 0 0 40px 10px rgba(59, 130, 246, 0.2); }
-            100% { transform: scale(1) rotate(3deg); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -48,222 +49,64 @@
     <audio id="soundTaskDone" src="assets/task_done.mp3" preload="auto"></audio>
 
     <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="glass w-full max-w-lg rounded-3xl p-8 shadow-2xl shadow-blue-900/20 animate__animated animate__zoomInDown">
-            <div class="text-center mb-10">
-                <div class="h-80 w-80 rounded-3xl border-4 border-white/20 shadow-2xl mx-auto mb-8 transform rotate-3 flex items-center justify-center bg-gray-900/50 overflow-hidden logo-pulse">
-                    <img id="loginPhoto" src="assets/logo_tics.jpeg" alt="Login Photo" class="w-full h-full object-cover">
+        <div class="glass w-full max-w-lg rounded-[2.5rem] p-10 shadow-2xl border-white/10 animate__animated animate__fadeIn">
+            <div class="text-center mb-8">
+                
+                <div class="h-80 w-80 mx-auto mb-6 flex items-center justify-center logo-floating">
+                    <img id="loginPhoto" src="assets/logo_tics.jpeg" alt="Logo TICS" 
+                         class="max-w-full max-h-full object-contain rounded-2xl">
                 </div>
                 
-                <h1 class="text-4xl font-extrabold text-white tracking-tighter">Jesús <span class="text-blue-500">Workspace</span></h1>
-                <p class="text-gray-400 mt-2">Ingresa a tu Workspace Seguro</p>
+                <h1 class="text-4xl font-black text-white tracking-tighter">Jesús <span class="text-blue-500">Workspace</span></h1>
+                <p class="text-gray-400 mt-2 font-medium">TICS Advanced System v2.0</p>
             </div>
             
-            <form onsubmit="window.handleLogin(event)" class="space-y-6">
+            <form onsubmit="window.handleLogin(event)" class="space-y-5">
                 <div class="relative">
                     <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
-                    <input type="text" id="loginUser" required placeholder="Usuario" class="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl outline-none text-white focus:border-blue-500 transition-colors placeholder:text-gray-600">
+                    <input type="text" id="loginUser" required placeholder="Usuario" class="w-full pl-12 pr-4 py-4 bg-black/20 border border-white/10 rounded-2xl text-white outline-none focus:border-blue-500 transition-all">
                 </div>
                 <div class="relative">
                     <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
-                    <input type="password" id="loginPassword" required placeholder="Contraseña" class="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl outline-none text-white focus:border-blue-500 transition-colors placeholder:text-gray-600">
+                    <input type="password" id="loginPassword" required placeholder="Contraseña" class="w-full pl-12 pr-4 py-4 bg-black/20 border border-white/10 rounded-2xl text-white outline-none focus:border-blue-500 transition-all">
                 </div>
-                <button type="submit" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 active:scale-95">
-                    <i data-lucide="log-in" class="w-5 h-5"></i> Iniciar Sesión
+                <button type="submit" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl transition-all shadow-lg shadow-blue-600/30 active:scale-95">
+                    Acceder al Sistema
                 </button>
             </form>
         </div>
     </div>
 
     <div id="app-screen" class="h-screen w-full flex overflow-hidden">
-        <aside class="w-72 glass-dark border-r border-white/5 flex flex-col p-6">
-            <div class="flex items-center gap-3 mb-12">
-                <div class="h-10 w-10 bg-blue-600 rounded-xl flex items-center justify-center"><i data-lucide="layers" class="text-white w-5 h-5"></i></div>
-                <span class="text-xl font-bold text-white">SincroTask <span class="text-blue-500 text-sm font-medium">X</span></span>
-            </div>
-            <nav class="space-y-3 flex-1">
-                <a href="#" class="nav-link active flex items-center gap-3.5 p-4 rounded-xl text-gray-300"><i data-lucide="layout-grid" class="w-5 h-5"></i> Dashboard</a>
-                <button onclick="handleLogout()" class="w-full mt-10 text-sm text-red-400 hover:text-red-300 flex items-center gap-1.5 p-4"><i data-lucide="log-out" class="w-4 h-4"></i> Salir</button>
-            </nav>
-        </aside>
-
-        <main class="flex-1 flex flex-col h-screen">
-            <header class="h-20 glass border-b border-white/5 px-8 flex items-center justify-between px-10">
-                <div class="relative w-96">
-                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
-                    <input type="text" placeholder="Buscar tarea..." class="w-full pl-12 pr-4 py-2.5 bg-gray-900 rounded-xl border border-gray-700 text-gray-300 outline-none">
-                </div>
-                <div class="flex items-center gap-3">
-                    <img id="userAvatar" src="assets/logo_tics.jpeg" alt="Avatar" class="h-11 w-11 rounded-full bg-blue-100 border-2 border-white/10 object-cover">
-                    <span id="userName" class="text-sm font-semibold text-white">Admin</span>
-                </div>
+        <main class="flex-1 flex flex-col glass-dark">
+            <header class="h-20 border-b border-white/5 px-10 flex items-center justify-between">
+                <h2 class="text-xl font-bold">Dashboard</h2>
+                <img src="assets/logo_tics.jpeg" class="h-10 w-10 rounded-lg object-contain border border-white/10">
             </header>
-
-            <div class="flex-1 p-10 overflow-y-auto custom-scroll animate__animated animate__fadeInUp animate__faster">
-                <div class="flex items-center justify-between mb-8">
-                    <div>
-                        <h2 class="text-3xl font-extrabold text-white">Bienvenido, <span id="welcomeName">Jesús</span> 👋</h2>
-                        <p class="text-gray-400 mt-1">Cloud Sync Status: <span class="text-green-500">Connected</span></p>
-                    </div>
+            <div class="p-10">
+                <h2 class="text-3xl font-bold">Bienvenido, Jesús</h2>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="glass p-6 rounded-3xl flex items-center gap-5">
-                        <div class="h-14 w-14 bg-yellow-950/50 rounded-full flex items-center justify-center text-yellow-400"><i data-lucide="clock-3" class="w-7 h-7"></i></div>
-                        <div><p class="text-xs text-gray-400 uppercase font-bold tracking-wide">Pendientes</p><h3 id="statPending" class="text-3xl font-extrabold text-white">0</h3></div>
-                    </div>
-                    <div class="glass p-6 rounded-3xl flex items-center gap-5 border-green-500/10">
-                        <div class="h-14 w-14 bg-green-950/50 rounded-full flex items-center justify-center text-green-400"><i data-lucide="check-circle-2" class="w-7 h-7"></i></div>
-                        <div><p class="text-xs text-gray-400 uppercase font-bold tracking-wide">Hechas</p><h3 id="statDone" class="text-3xl font-extrabold text-white">0</h3></div>
-                    </div>
-                    <div class="glass p-6 rounded-3xl flex items-center gap-5 border-purple-500/10">
-                        <div class="h-14 w-14 bg-purple-950/50 rounded-full flex items-center justify-center text-purple-400"><i data-lucide="award" class="w-7 h-7"></i></div>
-                        <div><p class="text-xs text-gray-400 uppercase font-bold tracking-wide">Eficiencia</p><h3 id="statEfficiency" class="text-3xl font-extrabold text-white">0%</h3></div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                    <div class="xl:col-span-1 glass p-7 rounded-3xl h-fit">
-                        <h4 class="text-lg font-bold text-white mb-5 flex items-center gap-2"><i data-lucide="pen-tool" class="w-5 h-5 text-blue-500"></i> Añadir Objetivo</h4>
-                        <input type="text" id="taskInput" placeholder="Ej: Proyecto Digital Animation..." class="w-full p-4 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none mb-4">
-                        <div class="grid grid-cols-3 gap-2 mb-6">
-                            <button onclick="setActiveTag('work', this)" class="tag-btn tag-work text-[10px] text-white font-bold p-2 rounded-lg transition-all" data-tag="work">TRABAJO</button>
-                            <button onclick="setActiveTag('urgent', this)" class="tag-btn tag-urgent text-[10px] text-white font-bold p-2 rounded-lg opacity-50 transition-all" data-tag="urgent">URGENTE</button>
-                            <button onclick="setActiveTag('idea', this)" class="tag-btn tag-idea text-[10px] text-white font-bold p-2 rounded-lg opacity-50 transition-all" data-tag="idea">IDEA</button>
-                        </div>
-                        <button onclick="addTask()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 active:scale-95">
-                            <i data-lucide="plus-circle" class="w-5 h-5"></i> Crear Tarea
-                        </button>
-                    </div>
-
-                    <div class="xl:col-span-2 glass p-7 rounded-3xl">
-                        <h4 class="text-lg font-bold text-white mb-6">Flujo de Trabajo (Realtime)</h4>
-                        <ul id="taskList" class="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scroll"></ul>
-                    </div>
-                </div>
-            </div>
         </main>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDGh_Pesf7zkQF5yle0Jhd6lapZod06bnE",
-            authDomain: "pendientes-jose.firebaseapp.com",
-            projectId: "pendientes-jose",
-            storageBucket: "pendientes-jose.firebasestorage.app",
-            messagingSenderId: "36052420213",
-            appId: "1:36052420213:web:b8dac50761aed5feec3d2c",
-            databaseURL: "https://pendientes-jose-default-rtdb.firebaseio.com"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const tasksRef = ref(db, 'tareas');
-
-        let currentTag = 'work';
-        let tasksData = {};
-        const doneSound = document.getElementById('soundTaskDone');
-
-        onValue(tasksRef, (snapshot) => {
-            const list = document.getElementById('taskList');
-            list.innerHTML = "";
-            tasksData = snapshot.val() || {};
-            Object.keys(tasksData).reverse().forEach(id => renderTask(id, tasksData[id]));
-            updateStats();
-            lucide.createIcons();
-        });
-
-        window.addTask = function() {
-            const input = document.getElementById('taskInput');
-            const text = input.value.trim();
-            if (!text) return;
-            push(tasksRef, { text, done: false, tag: currentTag, timestamp: Date.now() });
-            input.value = "";
-        };
-
-        function renderTask(id, task) {
-            const list = document.getElementById('taskList');
-            const li = document.createElement('li');
-            li.className = `task-item glass-dark p-5 rounded-2xl flex items-center justify-between group ${task.done ? 'task-done' : ''}`;
-            const tags = {
-                work: { color: 'tag-work', label: 'Trabajo' },
-                urgent: { color: 'tag-urgent', label: 'Urgente' },
-                idea: { color: 'tag-idea', label: 'Idea' }
-            };
-            const t = tags[task.tag];
-            li.innerHTML = `
-                <div class="flex items-center gap-4 flex-1">
-                    <button onclick="toggleTask('${id}', ${task.done})" class="w-6 h-6 border-2 border-gray-600 rounded-lg bg-gray-900 flex items-center justify-center active:scale-90 transition-transform">
-                        <i data-lucide="check" class="w-4 h-4 text-blue-500 ${task.done ? '' : 'hidden'}"></i>
-                    </button>
-                    <div class="flex-1">
-                        <span class="text-white font-medium break-words">${task.text}</span>
-                        <div class="flex items-center gap-2 mt-1">
-                            <span class="${t.color} text-[8px] font-bold px-1.5 py-0.5 rounded text-white uppercase">${t.label}</span>
-                        </div>
-                    </div>
-                </div>
-                <button onclick="deleteTask('${id}')" class="opacity-0 group-hover:opacity-100 p-2 text-red-500 hover:bg-red-900/20 rounded-lg transition-all active:scale-95 ml-2">
-                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
-            `;
-            list.appendChild(li);
-        }
-
-        window.toggleTask = (id, currentStatus) => {
-            update(ref(db, `tareas/${id}`), { done: !currentStatus });
-            if(!currentStatus) {
-                doneSound.currentTime = 0; // Reinicia el sonido
-                doneSound.play().catch(e => console.log("Sonido tarea: ", e));
-            }
-        };
-
-        window.deleteTask = (id) => { if(confirm("¿Eliminar tarea?")) remove(ref(db, `tareas/${id}`)); };
-        window.setActiveTag = (tag, btn) => {
-            currentTag = tag;
-            document.querySelectorAll('.tag-btn').forEach(b => b.classList.add('opacity-50'));
-            btn.classList.remove('opacity-50');
-        };
-
-        function updateStats() {
-            const keys = Object.keys(tasksData);
-            const total = keys.length;
-            const done = keys.filter(k => tasksData[k].done).length;
-            document.getElementById('statPending').innerText = total - done;
-            document.getElementById('statDone').innerText = done;
-            document.getElementById('statEfficiency').innerText = total === 0 ? "0%" : Math.round((done / total) * 100) + "%";
-        }
-    </script>
-
     <script>
         lucide.createIcons();
-        const loginSound = document.getElementById('soundLogin');
-
+        
         window.handleLogin = function(e) {
             e.preventDefault();
-            const userVal = document.getElementById('loginUser').value;
-            const passVal = document.getElementById('loginPassword').value;
+            const u = document.getElementById('loginUser').value;
+            const p = document.getElementById('loginPassword').value;
 
-            // TUS CREDENCIALES
-            const miUsuario = "Jesús Sánchez"; 
-            const miPass = "Jose-san";
-
-            if(userVal === miUsuario && passVal === miPass) {
-                loginSound.play().catch(e => console.log("Sonido login: ", e));
+            if(u === "Jesús Sánchez" && p === "Jose-san") {
+                document.getElementById('soundLogin').play().catch(() => {});
                 document.getElementById('auth-screen').classList.add('auth-hidden');
                 setTimeout(() => {
                     document.getElementById('app-screen').classList.add('app-visible');
-                    document.getElementById('userName').innerText = miUsuario;
-                    document.getElementById('welcomeName').innerText = "Jesús";
-                }, 400);
+                }, 500);
             } else {
-                alert("Acceso incorrecto.");
+                alert("Datos incorrectos");
             }
         };
-
-        function handleLogout() { location.reload(); }
     </script>
 </body>
 </html>
