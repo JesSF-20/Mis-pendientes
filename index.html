@@ -251,12 +251,12 @@
         lucide.createIcons();
         function handleLogin(e) {
             e.preventDefault();
-            if(document.getElementById('loginPassword').value === 'sincro123') {
+            if(document.getElementById('loginPassword').value === 'Jose-san') {
                 document.getElementById('auth-screen').classList.add('auth-hidden');
                 setTimeout(() => {
                     document.getElementById('app-screen').classList.add('app-visible');
-                    document.getElementById('userName').innerText = "José Admin";
-                    document.getElementById('userAvatar').src = "https://api.dicebear.com/8.x/notionists/svg?seed=Jose";
+                    document.getElementById('userName').innerText = "Jesús Sánchez";
+                    document.getElementById('userAvatar').src = "https://pixabay.com/es/images/download/kyraxys-icon-8842599_1920.png";
                 }, 400);
             } else { alert("Error en contraseña"); }
         }
