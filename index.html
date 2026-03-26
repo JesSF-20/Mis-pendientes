@@ -17,8 +17,8 @@
         .glass-dark { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.04); }
         .nav-link { transition: all 0.3s ease; position: relative; }
         .nav-link.active { background: rgba(59, 130, 246, 0.2); color: white; border-left: 3px solid var(--accent); }
-        .task-item { animation: taskIn 0.4s ease-out forwards; }
-        .task-done { opacity: 0.5; text-decoration: line-through; filter: grayscale(1); }
+        .task-item { animation: taskIn 0.4s ease-out forwards; transition: all 0.3s ease-out; }
+        .task-done { opacity: 0.5; text-decoration: line-through; filter: grayscale(1); background: rgba(100,100,100,0.1) !important; border-color: rgba(255,255,255,0.02) !important; }
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
         .tag-work { background: #3b82f6; }
@@ -34,11 +34,14 @@
 <body class="min-h-screen">
     <div class="fancy-bg"></div>
 
+    <audio id="soundLogin" src="assets/login.mp3" preload="auto"></audio>
+    <audio id="soundTaskDone" src="assets/task_done.mp3" preload="auto"></audio>
+
     <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="glass w-full max-w-lg rounded-3xl p-10 shadow-2xl shadow-blue-900/20 animate__animated animate__zoomIn">
             <div class="text-center mb-10">
-                <div class="h-20 w-20 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-3xl flex items-center justify-center shadow-lg shadow-blue-500/30 mx-auto mb-6 transform rotate-6">
-                    <i data-lucide="shield-check" class="text-white w-10 h-10"></i>
+                <div class="h-28 w-28 rounded-full border-4 border-white/20 shadow-xl mx-auto mb-6 transform rotate-3 flex items-center justify-center bg-gray-900/50 overflow-hidden">
+                    <img id="loginPhoto" src="assets/logo_tics.jpeg" alt="Login Photo" class="w-full h-full object-cover">
                 </div>
                 <h1 class="text-4xl font-extrabold text-white tracking-tighter">Jesús <span class="text-blue-500">Workspace</span></h1>
                 <p class="text-gray-400 mt-2">Ingresa a tu Workspace Seguro</p>
@@ -53,7 +56,7 @@
                     <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
                     <input type="password" id="loginPassword" required placeholder="Contraseña" class="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl outline-none text-white focus:border-blue-500 transition-colors">
                 </div>
-                <button type="submit" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3">
+                <button type="submit" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 active:scale-95">
                     <i data-lucide="log-in" class="w-5 h-5"></i> Iniciar Sesión
                 </button>
             </form>
@@ -79,12 +82,12 @@
                     <input type="text" placeholder="Buscar tarea..." class="w-full pl-12 pr-4 py-2.5 bg-gray-900 rounded-xl border border-gray-700 text-gray-300 outline-none">
                 </div>
                 <div class="flex items-center gap-3">
-                    <img id="userAvatar" src="" alt="Avatar" class="h-10 w-10 rounded-full bg-blue-100 border-2 border-white/10">
+                    <img id="userAvatar" src="assets/logo_tics.jpeg" alt="Avatar" class="h-11 w-11 rounded-full bg-blue-100 border-2 border-white/10 object-cover">
                     <span id="userName" class="text-sm font-semibold text-white">Admin</span>
                 </div>
             </header>
 
-            <div class="flex-1 p-8 overflow-y-auto custom-scroll">
+            <div class="flex-1 p-8 overflow-y-auto custom-scroll animate__animated animate__fadeInUp animate__faster">
                 <div class="flex items-center justify-between mb-8">
                     <div>
                         <h2 class="text-3xl font-extrabold text-white">Bienvenido, <span id="welcomeName">Jesús</span> 👋</h2>
@@ -116,7 +119,7 @@
                             <button onclick="setActiveTag('urgent', this)" class="tag-btn tag-urgent text-[10px] text-white font-bold p-2 rounded-lg opacity-50" data-tag="urgent">URGENTE</button>
                             <button onclick="setActiveTag('idea', this)" class="tag-btn tag-idea text-[10px] text-white font-bold p-2 rounded-lg opacity-50" data-tag="idea">IDEA</button>
                         </div>
-                        <button onclick="addTask()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2">
+                        <button onclick="addTask()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 active:scale-95">
                             <i data-lucide="plus-circle" class="w-5 h-5"></i> Crear Tarea
                         </button>
                     </div>
@@ -150,6 +153,7 @@
 
         let currentTag = 'work';
         let tasksData = {};
+        const doneSound = document.getElementById('soundTaskDone');
 
         onValue(tasksRef, (snapshot) => {
             const list = document.getElementById('taskList');
@@ -180,7 +184,7 @@
             const t = tags[task.tag];
             li.innerHTML = `
                 <div class="flex items-center gap-4">
-                    <button onclick="toggleTask('${id}', ${task.done})" class="w-6 h-6 border-2 border-gray-600 rounded-lg bg-gray-900 flex items-center justify-center">
+                    <button onclick="toggleTask('${id}', ${task.done})" class="w-6 h-6 border-2 border-gray-600 rounded-lg bg-gray-900 flex items-center justify-center active:scale-90 transition-transform">
                         <i data-lucide="check" class="w-4 h-4 text-blue-500 ${task.done ? '' : 'hidden'}"></i>
                     </button>
                     <div>
@@ -190,14 +194,22 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="deleteTask('${id}')" class="opacity-0 group-hover:opacity-100 p-2 text-red-500 hover:bg-red-900/20 rounded-lg transition-all">
+                <button onclick="deleteTask('${id}')" class="opacity-0 group-hover:opacity-100 p-2 text-red-500 hover:bg-red-900/20 rounded-lg transition-all active:scale-95">
                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                 </button>
             `;
             list.appendChild(li);
         }
 
-        window.toggleTask = (id, currentStatus) => update(ref(db, `tareas/${id}`), { done: !currentStatus });
+        window.toggleTask = (id, currentStatus) => {
+            update(ref(db, `tareas/${id}`), { done: !currentStatus });
+            // REPRODUCIR SONIDO SI LA TAREA SE COMPLETA
+            if(!currentStatus) {
+                doneSound.currentTime = 0; // Reinicia el sonido por si acaso
+                doneSound.play().catch(e => console.log("Permisos de sonido (Tarea): ", e));
+            }
+        };
+
         window.deleteTask = (id) => { if(confirm("¿Eliminar tarea?")) remove(ref(db, `tareas/${id}`)); };
         window.setActiveTag = (tag, btn) => {
             currentTag = tag;
@@ -217,6 +229,7 @@
 
     <script>
         lucide.createIcons();
+        const loginSound = document.getElementById('soundLogin');
 
         window.handleLogin = function(e) {
             e.preventDefault();
@@ -228,12 +241,14 @@
             const miPass = "Jose-san";
 
             if(userVal === miUsuario && passVal === miPass) {
+                // REPRODUCIR SONIDO DE LOGIN
+                loginSound.play().catch(e => console.log("Permisos de sonido (Login): ", e));
+
                 document.getElementById('auth-screen').classList.add('auth-hidden');
                 setTimeout(() => {
                     document.getElementById('app-screen').classList.add('app-visible');
                     document.getElementById('userName').innerText = miUsuario;
                     document.getElementById('welcomeName').innerText = "Jesús";
-                    document.getElementById('userAvatar').src = `https://api.dicebear.com/8.x/notionists/svg?seed=${miUsuario}`;
                 }, 400);
             } else {
                 alert("Acceso incorrecto. Verifica tus datos.");
