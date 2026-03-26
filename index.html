@@ -29,6 +29,16 @@
         .app-visible { display: flex !important; opacity: 1 !important; }
         .auth-hidden { transform: scale(0.8) translateY(-100vh); opacity: 0; pointer-events: none; }
         @keyframes taskIn { 0% { opacity: 0; transform: translateY(20px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+        
+        /* ANIMACIÓN DE PALPITO SUAVE PARA EL LOGO */
+        .logo-pulse {
+            animation: pulseSoft 4s infinite;
+        }
+        @keyframes pulseSoft {
+            0% { transform: scale(1) rotate(3deg); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            50% { transform: scale(1.05) rotate(5deg); box-shadow: 0 0 40px 10px rgba(59, 130, 246, 0.2); }
+            100% { transform: scale(1) rotate(3deg); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -38,31 +48,31 @@
     <audio id="soundTaskDone" src="assets/task_done.mp3" preload="auto"></audio>
 
     <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="glass w-full max-w-lg rounded-3xl p-10 shadow-2xl shadow-blue-900/20 animate__animated animate__zoomIn">
-        <div class="text-center mb-10">
-            <div class="h-40 w-40 rounded-full border-4 border-white/20 shadow-2xl mx-auto mb-8 transform rotate-3 flex items-center justify-center bg-gray-900/50 overflow-hidden">
-                <img id="loginPhoto" src="assets/logo_tics.jpeg" alt="Login Photo" class="w-full h-full object-cover">
+        <div class="glass w-full max-w-lg rounded-3xl p-10 shadow-2xl shadow-blue-900/20 animate__animated animate__zoomInDown">
+            <div class="text-center mb-12">
+                <div class="h-56 w-56 rounded-3xl border-4 border-white/20 shadow-2xl mx-auto mb-10 transform rotate-3 flex items-center justify-center bg-gray-900/50 overflow-hidden logo-pulse">
+                    <img id="loginPhoto" src="assets/logo_tics.jpeg" alt="Login Photo" class="w-full h-full object-cover">
+                </div>
+                
+                <h1 class="text-4xl font-extrabold text-white tracking-tighter">Jesús <span class="text-blue-500">Workspace</span></h1>
+                <p class="text-gray-400 mt-2">Ingresa a tu Workspace Seguro</p>
             </div>
             
-            <h1 class="text-4xl font-extrabold text-white tracking-tighter">Jesús <span class="text-blue-500">Workspace</span></h1>
-            <p class="text-gray-400 mt-2">Ingresa a tu Workspace Seguro</p>
+            <form onsubmit="window.handleLogin(event)" class="space-y-6">
+                <div class="relative">
+                    <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+                    <input type="text" id="loginUser" required placeholder="Usuario" class="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl outline-none text-white focus:border-blue-500 transition-colors placeholder:text-gray-600">
+                </div>
+                <div class="relative">
+                    <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+                    <input type="password" id="loginPassword" required placeholder="Contraseña" class="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl outline-none text-white focus:border-blue-500 transition-colors placeholder:text-gray-600">
+                </div>
+                <button type="submit" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 active:scale-95">
+                    <i data-lucide="log-in" class="w-5 h-5"></i> Iniciar Sesión
+                </button>
+            </form>
         </div>
-        
-        <form onsubmit="window.handleLogin(event)" class="space-y-6">
-            <div class="relative">
-                <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
-                <input type="text" id="loginUser" required placeholder="Usuario" class="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl outline-none text-white focus:border-blue-500 transition-colors">
-            </div>
-            <div class="relative">
-                <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
-                <input type="password" id="loginPassword" required placeholder="Contraseña" class="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl outline-none text-white focus:border-blue-500 transition-colors">
-            </div>
-            <button type="submit" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 active:scale-95">
-                <i data-lucide="log-in" class="w-5 h-5"></i> Iniciar Sesión
-            </button>
-        </form>
     </div>
-</div>
 
     <div id="app-screen" class="h-screen w-full flex overflow-hidden">
         <aside class="w-72 glass-dark border-r border-white/5 flex flex-col p-6">
@@ -77,7 +87,7 @@
         </aside>
 
         <main class="flex-1 flex flex-col h-screen">
-            <header class="h-20 glass border-b border-white/5 px-8 flex items-center justify-between">
+            <header class="h-20 glass border-b border-white/5 px-8 flex items-center justify-between px-10">
                 <div class="relative w-96">
                     <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
                     <input type="text" placeholder="Buscar tarea..." class="w-full pl-12 pr-4 py-2.5 bg-gray-900 rounded-xl border border-gray-700 text-gray-300 outline-none">
@@ -88,7 +98,7 @@
                 </div>
             </header>
 
-            <div class="flex-1 p-8 overflow-y-auto custom-scroll animate__animated animate__fadeInUp animate__faster">
+            <div class="flex-1 p-10 overflow-y-auto custom-scroll animate__animated animate__fadeInUp animate__faster">
                 <div class="flex items-center justify-between mb-8">
                     <div>
                         <h2 class="text-3xl font-extrabold text-white">Bienvenido, <span id="welcomeName">Jesús</span> 👋</h2>
@@ -99,15 +109,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <div class="glass p-6 rounded-3xl flex items-center gap-5">
                         <div class="h-14 w-14 bg-yellow-950/50 rounded-full flex items-center justify-center text-yellow-400"><i data-lucide="clock-3" class="w-7 h-7"></i></div>
-                        <div><p class="text-xs text-gray-400 uppercase font-bold">Pendientes</p><h3 id="statPending" class="text-3xl font-extrabold text-white">0</h3></div>
+                        <div><p class="text-xs text-gray-400 uppercase font-bold tracking-wide">Pendientes</p><h3 id="statPending" class="text-3xl font-extrabold text-white">0</h3></div>
                     </div>
-                    <div class="glass p-6 rounded-3xl flex items-center gap-5">
+                    <div class="glass p-6 rounded-3xl flex items-center gap-5 border-green-500/10">
                         <div class="h-14 w-14 bg-green-950/50 rounded-full flex items-center justify-center text-green-400"><i data-lucide="check-circle-2" class="w-7 h-7"></i></div>
-                        <div><p class="text-xs text-gray-400 uppercase font-bold">Hechas</p><h3 id="statDone" class="text-3xl font-extrabold text-white">0</h3></div>
+                        <div><p class="text-xs text-gray-400 uppercase font-bold tracking-wide">Hechas</p><h3 id="statDone" class="text-3xl font-extrabold text-white">0</h3></div>
                     </div>
-                    <div class="glass p-6 rounded-3xl flex items-center gap-5">
+                    <div class="glass p-6 rounded-3xl flex items-center gap-5 border-purple-500/10">
                         <div class="h-14 w-14 bg-purple-950/50 rounded-full flex items-center justify-center text-purple-400"><i data-lucide="award" class="w-7 h-7"></i></div>
-                        <div><p class="text-xs text-gray-400 uppercase font-bold">Eficiencia</p><h3 id="statEfficiency" class="text-3xl font-extrabold text-white">0%</h3></div>
+                        <div><p class="text-xs text-gray-400 uppercase font-bold tracking-wide">Eficiencia</p><h3 id="statEfficiency" class="text-3xl font-extrabold text-white">0%</h3></div>
                     </div>
                 </div>
 
@@ -116,9 +126,9 @@
                         <h4 class="text-lg font-bold text-white mb-5 flex items-center gap-2"><i data-lucide="pen-tool" class="w-5 h-5 text-blue-500"></i> Añadir Objetivo</h4>
                         <input type="text" id="taskInput" placeholder="Ej: Proyecto Digital Animation..." class="w-full p-4 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none mb-4">
                         <div class="grid grid-cols-3 gap-2 mb-6">
-                            <button onclick="setActiveTag('work', this)" class="tag-btn tag-work text-[10px] text-white font-bold p-2 rounded-lg" data-tag="work">TRABAJO</button>
-                            <button onclick="setActiveTag('urgent', this)" class="tag-btn tag-urgent text-[10px] text-white font-bold p-2 rounded-lg opacity-50" data-tag="urgent">URGENTE</button>
-                            <button onclick="setActiveTag('idea', this)" class="tag-btn tag-idea text-[10px] text-white font-bold p-2 rounded-lg opacity-50" data-tag="idea">IDEA</button>
+                            <button onclick="setActiveTag('work', this)" class="tag-btn tag-work text-[10px] text-white font-bold p-2 rounded-lg transition-all" data-tag="work">TRABAJO</button>
+                            <button onclick="setActiveTag('urgent', this)" class="tag-btn tag-urgent text-[10px] text-white font-bold p-2 rounded-lg opacity-50 transition-all" data-tag="urgent">URGENTE</button>
+                            <button onclick="setActiveTag('idea', this)" class="tag-btn tag-idea text-[10px] text-white font-bold p-2 rounded-lg opacity-50 transition-all" data-tag="idea">IDEA</button>
                         </div>
                         <button onclick="addTask()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 active:scale-95">
                             <i data-lucide="plus-circle" class="w-5 h-5"></i> Crear Tarea
@@ -184,18 +194,18 @@
             };
             const t = tags[task.tag];
             li.innerHTML = `
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 flex-1">
                     <button onclick="toggleTask('${id}', ${task.done})" class="w-6 h-6 border-2 border-gray-600 rounded-lg bg-gray-900 flex items-center justify-center active:scale-90 transition-transform">
                         <i data-lucide="check" class="w-4 h-4 text-blue-500 ${task.done ? '' : 'hidden'}"></i>
                     </button>
-                    <div>
-                        <span class="text-white font-medium">${task.text}</span>
+                    <div class="flex-1">
+                        <span class="text-white font-medium break-words">${task.text}</span>
                         <div class="flex items-center gap-2 mt-1">
                             <span class="${t.color} text-[8px] font-bold px-1.5 py-0.5 rounded text-white uppercase">${t.label}</span>
                         </div>
                     </div>
                 </div>
-                <button onclick="deleteTask('${id}')" class="opacity-0 group-hover:opacity-100 p-2 text-red-500 hover:bg-red-900/20 rounded-lg transition-all active:scale-95">
+                <button onclick="deleteTask('${id}')" class="opacity-0 group-hover:opacity-100 p-2 text-red-500 hover:bg-red-900/20 rounded-lg transition-all active:scale-95 ml-2">
                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                 </button>
             `;
@@ -204,10 +214,9 @@
 
         window.toggleTask = (id, currentStatus) => {
             update(ref(db, `tareas/${id}`), { done: !currentStatus });
-            // REPRODUCIR SONIDO SI LA TAREA SE COMPLETA
             if(!currentStatus) {
-                doneSound.currentTime = 0; // Reinicia el sonido por si acaso
-                doneSound.play().catch(e => console.log("Permisos de sonido (Tarea): ", e));
+                doneSound.currentTime = 0; // Reinicia el sonido
+                doneSound.play().catch(e => console.log("Sonido tarea: ", e));
             }
         };
 
@@ -242,9 +251,7 @@
             const miPass = "Jose-san";
 
             if(userVal === miUsuario && passVal === miPass) {
-                // REPRODUCIR SONIDO DE LOGIN
-                loginSound.play().catch(e => console.log("Permisos de sonido (Login): ", e));
-
+                loginSound.play().catch(e => console.log("Sonido login: ", e));
                 document.getElementById('auth-screen').classList.add('auth-hidden');
                 setTimeout(() => {
                     document.getElementById('app-screen').classList.add('app-visible');
@@ -252,7 +259,7 @@
                     document.getElementById('welcomeName').innerText = "Jesús";
                 }, 400);
             } else {
-                alert("Acceso incorrecto. Verifica tus datos.");
+                alert("Acceso incorrecto.");
             }
         };
 
