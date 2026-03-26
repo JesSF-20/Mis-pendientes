@@ -1,0 +1,2 @@
+Si quieres, el siguiente paso podemos hacer una versión interactiva con menú. 
+El usuario pueda elegir entre ver estadísticas de palabras, letras o top 5 palabras, igual que la agenda.

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SincroTask Pro - Workspace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    animation: {
+                        'subtle-float': 'float 3s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                    },
+                    keyframes: {
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } },
+                        slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background: radial-gradient(circle at top left, #f8fafc, #e2e8f0);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .task-done { text-decoration: line-through; opacity: 0.5; }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex justify-center">
+
+    <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 animate-slide-up">
+        
+        <aside class="md:col-span-4 space-y-6">
+            <div class="glass-card p-6 rounded-[2rem]">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-indigo-600 p-2.5 rounded-2xl shadow-lg shadow-indigo-200">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-800">SincroTask</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Workspace ID</label>
+                        <div class="mt-1 relative">
+                            <input type="text" id="groupName" placeholder="Nombre de lista..." 
+                                   class="w-full pl-4 pr-12 py-3 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-indigo-500 transition-all outline-none shadow-sm">
+                            <button onclick="loadListWithAnim()" class="absolute right-2 top-2 p-1.5 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-100 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-4">
+                        <div class="bg-white p-4 rounded-2xl border border-gray-50">
+                            <p class="text-xs text-gray-400 font-semibold">Total</p>
+                            <p id="totalTasks" class="text-2xl font-bold text-gray-800">0</p>
+                        </div>
+                        <div class="bg-indigo-50 p-4 rounded-2xl border border-indigo-100">
+                            <p class="text-xs text-indigo-400 font-semibold">Sesión</p>
+                            <p id="sessionStatus" class="text-xs font-bold text-indigo-600 mt-2 truncate">Offline</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden md:block p-6 bg-gradient-to-br from-gray-800 to-gray-900 rounded-[2rem] text-white overflow-hidden relative">
+                <div class="relative z-10">
+                    <p class="text-sm opacity-80">Workspace de:</p>
+                    <p class="text-lg font-bold">José de Jesús</p>
+                </div>
+                <div class="absolute -right-4 -bottom-4 opacity-10">
+                    <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+            </div>
+        </aside>
+
+        <main class="md:col-span-8 flex flex-col gap-6">
+            <div class="glass-card p-2 rounded-[2rem] flex items-center">
+                <input type="text" id="taskInput" placeholder="Añadir nueva tarea..." 
+                       class="flex-1 bg-transparent px-6 py-4 outline-none text-gray-700 text-lg">
+                <button onclick="addTaskWithAnim()" class="bg-indigo-600 text-white px-8 py-4 rounded-[1.5rem] font-bold hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-200 transition-all active:scale-95">
+                    Añadir
+                </button>
+            </div>
+
+            <div class="glass-card rounded-[2rem] flex-1 flex flex-col overflow-hidden min-h-[500px]">
+                <div class="p-6 border-b border-gray-50 flex justify-between items-center">
+                    <h3 class="font-bold text-gray-800 text-lg">Tareas Pendientes</h3>
+                    <span class="px-3 py-1 bg-emerald-100 text-emerald-600 text-xs font-bold rounded-full uppercase">Cloud Sync</span>
+                </div>
+                
+                <ul id="taskList" class="p-6 space-y-4 overflow-y-auto max-h-[600px] custom-scrollbar">
+                    <div id="initialState" class="text-center py-20">
+                        <div class="bg-indigo-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 animate-subtle-float">
+                            <svg class="w-10 h-10 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        </div>
+                        <h4 class="text-gray-800 font-bold">Workspace Privado</h4>
+                        <p class="text-gray-400 text-sm">Ingresa un ID para ver tus tareas.</p>
+                    </div>
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Actualizaciones de UI Mejoradas
+        function updateUI(data) {
+            const listElement = document.getElementById('taskList');
+            const totalTasksEl = document.getElementById('totalTasks');
+            listElement.innerHTML = "";
+            
+            if(!data) {
+                totalTasksEl.innerText = "0";
+                listElement.innerHTML = `
+                    <div class="text-center py-20 opacity-40">
+                        <p class="text-lg font-medium italic">No hay nada por aquí...</p>
+                    </div>`;
+                return;
+            }
+
+            const keys = Object.keys(data);
+            totalTasksEl.innerText = keys.length;
+
+            keys.forEach(id => {
+                const li = document.createElement('li');
+                li.className = "group flex justify-between items-center bg-white p-5 rounded-3xl border border-gray-50 hover:border-indigo-100 hover:shadow-xl hover:shadow-indigo-50/50 transition-all animate-slide-up";
+                li.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <button onclick="this.nextElementSibling.classList.toggle('task-done')" class="w-6 h-6 rounded-lg border-2 border-gray-100 flex items-center justify-center hover:border-indigo-400 transition-colors">
+                            <div class="w-2 h-2 bg-indigo-500 rounded-sm opacity-0 group-hover:opacity-20"></div>
+                        </button>
+                        <div>
+                            <span class="text-gray-700 font-semibold block transition-all">${data[id].text}</span>
+                            <span class="text-[10px] text-gray-300 font-bold uppercase tracking-tighter">Creado hoy</span>
+                        </div>
+                    </div>
+                    <button onclick="handleDelete('${id}', this.closest('li'))" class="p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                    </button>`;
+                listElement.appendChild(li);
+            });
+        }
+
+        function loadListWithAnim() {
+            const group = document.getElementById('groupName').value;
+            if(!group) return;
+            document.getElementById('sessionStatus').innerText = group;
+            document.getElementById('initialState').style.display = 'none';
+            window.loadList();
+        }
+
+        function addTaskWithAnim() {
+            const input = document.getElementById('taskInput');
+            if(!input.value) return;
+            window.addTask();
+        }
+
+        function handleDelete(id, element) {
+            element.classList.add('scale-90', 'opacity-0');
+            setTimeout(() => { window.deleteTask(id); }, 200);
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAni5sUGNEKTl49BBSf-IhPmaMp9fJqSVQ",
+            authDomain: "misdeberes-3206f.firebaseapp.com",
+            databaseURL: "https://misdeberes-3206f-default-rtdb.firebaseio.com",
+            projectId: "misdeberes-3206f",
+            storageBucket: "misdeberes-3206f.firebasestorage.app",
+            messagingSenderId: "695160178321",
+            appId: "1:695160178321:web:8f4f64b6eac883b6f82130"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        window.loadList = function() {
+            const group = document.getElementById('groupName').value;
+            onValue(ref(db, 'lists/' + group), (snapshot) => { updateUI(snapshot.val()); });
+        }
+
+        window.addTask = function() {
+            const group = document.getElementById('groupName').value;
+            const text = document.getElementById('taskInput').value;
+            if(!group || !text) return;
+            set(push(ref(db, 'lists/' + group)), { text: text });
+            document.getElementById('taskInput').value = "";
+        }
+
+        window.deleteTask = function(id) {
+            const group = document.getElementById('groupName').value;
+            remove(ref(db, `lists/${group}/${id}`));
+        }
+    </script>
+</body>
+</html>

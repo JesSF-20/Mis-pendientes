@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Alcancía Pastel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --mint: #b2f2bb; --lavender: #d0bfff; --pink: #ffc9c9; --blue: #a5d8ff; --text: #495057; }
+        body {
+            margin: 0; font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a1c4fd);
+            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .glass-container {
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px);
+            border-radius: 40px; padding: 40px; width: 90%; max-width: 380px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.4); text-align: center;
+        }
+        .header-img { width: 100px; height: 100px; margin: 0 auto 20px; animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .balance-card { background: white; border-radius: 25px; padding: 20px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .balance-card h2 { font-size: 2.5rem; margin: 0; color: #339af0; }
+        .progress-box { height: 12px; background: #f1f3f5; border-radius: 10px; margin: 15px 0; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--mint), var(--lavender)); transition: width 1s ease; }
+        input { width: 100%; border: 2px solid #f1f3f5; border-radius: 15px; padding: 15px; font-size: 1.1rem; outline: none; text-align: center; box-sizing: border-box; margin-bottom: 15px; }
+        .btn-group { display: flex; gap: 10px; }
+        button { flex: 1; padding: 15px; border: none; border-radius: 18px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-add { background: var(--mint); color: #2b8a3e; }
+        .btn-sub { background: var(--pink); color: #c92a2a; }
+        button:active { transform: scale(0.95); }
+    </style>
+</head>
+<body>
+    <div class="glass-container">
+        <div class="header-img">
+            <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#d0bfff" /><path d="M30 50 Q50 70 70 50" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
+        </div>
+        <h1>Mi Ahorro</h1>
+        <div class="balance-card">
+            <h2 id="balanceDisplay">$0</h2>
+            <div class="progress-box"><div class="progress-fill" id="progressFill"></div></div>
+            <small id="percentText">0% completado</small>
+        </div>
+        <input type="number" id="amount" placeholder="Monto $">
+        <div class="btn-group">
+            <button class="btn-add" onclick="update(true)">Ahorrar</button>
+            <button class="btn-sub" onclick="update(false)">Gasto</button>
+        </div>
+    </div>
+
+    <script>
+        const GOAL = 10000;
+        let total = parseFloat(localStorage.getItem('mi_alcancia_global')) || 0;
+
+        function update(isAdd) {
+            const input = document.getElementById('amount');
+            const val = parseFloat(input.value);
+            if (isNaN(val) || val <= 0) return;
+            total = isAdd ? total + val : total - val;
+            if(total < 0) total = 0;
+            localStorage.setItem('mi_alcancia_global', total);
+            render();
+            input.value = '';
+        }
+
+        function render() {
+            document.getElementById('balanceDisplay').innerText = `$${total.toLocaleString()}`;
+            const p = Math.min(100, (total / GOAL) * 100);
+            document.getElementById('percentText').innerText = `${Math.round(p)}% de $10,000`;
+            document.getElementById('progressFill').style.width = `${p}%`;
+        }
+        render();
+    </script>
+</body>
+</html>

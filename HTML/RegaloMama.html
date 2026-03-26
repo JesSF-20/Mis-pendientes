@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regalo Virtual para Mamá</title>
+    <style>
+        body {
+            background-color: #fff0f5;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 50px;
+            color: #d6336c;
+        }
+        h1 {
+            font-size: 3em;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .heart {
+            color: #ff4d6d;
+            font-size: 5em;
+            margin: 20px 0;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        button {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: scale(1.1);
+        }
+        #mensaje {
+            margin-top: 20px;
+            font-size: 1.5em;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>¡Te amo demasiado Mamá! 🌸</h1>
+    <div class="heart">❤️</div>
+    <p>Gracias por tu amor y todo lo que haces por mí. 💖</p>
+    <button onclick="mostrarMensaje()">Haz clic aquí para un mensaje especial 🎁</button>
+    <div id="mensaje">Solo quería enviarte un mensaje, sin que sea una fecha especial, para decirte que te amo mucho y que estoy pensando en ti.
+A veces me pongo a reflexionar sobre todo lo que has logrado y sobre la gran persona que eres. Admiro tu fuerza, tu perseverancia y la manera en que siempre encuentras la forma de seguir adelante, sin importar los desafíos. Eres una verdadera inspiración para mí y estoy muy orgulloso de ser tu hijo.
+Gracias por todo lo que has hecho y sigues haciendo por mí. Te quiero con todo mi corazón. 🌹💝</div>
+
+    <script>
+        function mostrarMensaje() {
+            const mensaje = document.getElementById('mensaje');
+            mensaje.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

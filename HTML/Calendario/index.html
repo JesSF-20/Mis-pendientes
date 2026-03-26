@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario Pastel Minimalista</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- PALETA DE COLORES PASTEL --- */
+        :root {
+            --bg-soft: #fdfbfb;
+            --primary-pastel: #d4e1f5; /* Azul cielo suave */
+            --accent-soft: #a8c0ff;
+            --text-main: #5a5a5a;
+            --pago: #ffb7b2;       /* Salmón pastel */
+            --importante: #ffdac1; /* Crema/Naranja pastel */
+            --social: #baffc9;     /* Verde menta pastel */
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .calendar-app {
+            background: var(--white);
+            width: 100%;
+            max-width: 850px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- LADO IZQUIERDO: CALENDARIO --- */
+        .calendar-main {
+            padding: 40px;
+            background: var(--white);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        /* Corrección Mayúscula en Meses */
+        .header h2 {
+            font-size: 1.6rem;
+            color: var(--accent-soft);
+            text-transform: capitalize; /* Esto asegura la mayúscula inicial */
+            font-weight: 700;
+        }
+
+        .nav-btn {
+            background: var(--primary-pastel);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: 0.3s;
+        }
+
+        .nav-btn:hover { background: var(--accent-soft); color: white; }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #bdc3c7;
+            margin-bottom: 15px;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 15px;
+            transition: 0.3s;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .day:hover { background: var(--primary-pastel); }
+
+        .day.today {
+            background: #f0f4f8;
+            border: 2px dashed var(--accent-soft);
+        }
+
+        .day.selected {
+            background: var(--accent-soft) !important;
+            color: white;
+            box-shadow: 0 5px 15px rgba(168, 192, 255, 0.4);
+        }
+
+        /* Puntos de eventos pastel */
+        .event-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 6px;
+        }
+        .dot-pago { background: var(--pago); }
+        .dot-importante { background: var(--importante); }
+        .dot-social { background: var(--social); }
+
+        /* --- LADO DERECHO: DETALLES E IMAGEN --- */
+        .details-side {
+            background: #fafbfc;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #f0f0f0;
+        }
+
+        /* Imagen decorativa minimalista */
+        .side-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+
+        .details-side h3 { margin-bottom: 5px; font-size: 1.2rem; }
+        #dateLabel { font-size: 0.9rem; color: #aaa; margin-bottom: 20px; }
+
+        .event-card {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary-pastel);
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            animation: slideLeft 0.5s ease;
+        }
+
+        @keyframes slideLeft {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .add-btn {
+            margin-top: auto;
+            background: var(--accent-soft);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover { opacity: 0.8; transform: translateY(-2px); }
+
+        /* --- MODAL --- */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            width: 300px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            background: #fdfdfd;
+        }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        .save { background: var(--social); border: none; flex: 1; padding: 10px; border-radius: 10px; cursor: pointer; }
+        .cancel { background: #eee; border: none; flex: 1; padding: 10px; border-radius: 10px; cursor: pointer; }
+
+        @media (max-width: 700px) {
+            .calendar-app { grid-template-columns: 1fr; }
+            .details-side { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calendar-app">
+        <div class="calendar-main">
+            <div class="header">
+                <button class="nav-btn" onclick="changeMonth(-1)">❮</button>
+                <h2 id="monthDisplay">Enero 2026</h2>
+                <button class="nav-btn" onclick="changeMonth(1)">❯</button>
+            </div>
+            
+            <div class="weekdays">
+                <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
+            </div>
+            
+            <div class="days-grid" id="daysGrid"></div>
+        </div>
+
+        <div class="details-side">
+            <img src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&q=80&w=400" alt="Minimal" class="side-img">
+            <h3 id="selectedDateTitle">Hoy</h3>
+            <p id="dateLabel">Selecciona un día para ver eventos</p>
+            
+            <div id="eventList" style="flex:1">
+                </div>
+
+            <button class="add-btn" onclick="openModal()">+ Nuevo Recordatorio</button>
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h3>Añadir Evento</h3>
+            <input type="text" id="eventInput" placeholder="Ej: Pago de luz">
+            <select id="eventType">
+                <option value="pago">💰 Pago</option>
+                <option value="importante">🔥 Importante</option>
+                <option value="social">🎉 Social</option>
+            </select>
+            <div class="btn-group">
+                <button class="save" onclick="saveEvent()">Guardar</button>
+                <button class="cancel" onclick="closeModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentMonth = new Date();
+        let selectedDayKey = null;
+        let events = JSON.parse(localStorage.getItem('pastelEvents')) || {};
+
+        function render() {
+            const grid = document.getElementById('daysGrid');
+            const display = document.getElementById('monthDisplay');
+            grid.innerHTML = '';
+
+            const year = currentMonth.getFullYear();
+            const month = currentMonth.getMonth();
+
+            // Formatear mes con Mayúscula inicial
+            const monthName = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric' }).format(currentMonth);
+            display.innerText = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const lastDate = new Date(year, month + 1, 0).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+                grid.innerHTML += `<div></div>`;
+            }
+
+            for (let i = 1; i <= lastDate; i++) {
+                const key = `${year}-${month}-${i}`;
+                const isSelected = selectedDayKey === key ? 'selected' : '';
+                const isToday = (i === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) ? 'today' : '';
+                
+                let dots = '';
+                if (events[key]) {
+                    dots = `<div class="event-dot dot-${events[key].type}"></div>`;
+                }
+
+                grid.innerHTML += `
+                    <div class="day ${isToday} ${isSelected}" onclick="selectDay(${i})">
+                        ${i}
+                        ${dots}
+                    </div>`;
+            }
+        }
+
+        function selectDay(day) {
+            selectedDayKey = `${currentMonth.getFullYear()}-${currentMonth.getMonth()}-${day}`;
+            document.getElementById('selectedDateTitle').innerText = `Día ${day}`;
+            updateEventList();
+            render();
+        }
+
+        function updateEventList() {
+            const list = document.getElementById('eventList');
+            list.innerHTML = '';
+            if (events[selectedDayKey]) {
+                list.innerHTML = `
+                    <div class="event-card" style="border-color: var(--${events[selectedDayKey].type})">
+                        <strong>${events[selectedDayKey].text}</strong><br>
+                        <small style="color:#999">${events[selectedDayKey].type}</small>
+                    </div>
+                    <button onclick="deleteEvent()" style="background:none; border:none; color:#ffb7b2; cursor:pointer; font-size:0.8rem">Eliminar</button>
+                `;
+            } else {
+                list.innerHTML = '<p style="font-size:0.8rem; opacity:0.5">Sin planes para hoy.</p>';
+            }
+        }
+
+        function changeMonth(val) {
+            currentMonth.setMonth(currentMonth.getMonth() + val);
+            render();
+        }
+
+        function openModal() {
+            if(!selectedDayKey) return alert("Selecciona un día");
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+        function saveEvent() {
+            const text = document.getElementById('eventInput').value;
+            const type = document.getElementById('eventType').value;
+            if(text) {
+                events[selectedDayKey] = { text, type };
+                localStorage.setItem('pastelEvents', JSON.stringify(events));
+                closeModal();
+                updateEventList();
+                render();
+            }
+        }
+
+        function deleteEvent() {
+            delete events[selectedDayKey];
+            localStorage.setItem('pastelEvents', JSON.stringify(events));
+            updateEventList();
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>

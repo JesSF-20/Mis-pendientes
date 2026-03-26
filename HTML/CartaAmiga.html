@@ -1,0 +1,200 @@
+<!DOCTYPE html>SAFJ061104TB4
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi querida amiga</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+
+        :root {
+            --primary-color: #ff69b4; /* Rosa fuerte */
+            --secondary-color: #ffc0cb; /* Rosa claro */
+            --tertiary-color: #fff0f5; /* Blanco rosado */
+            --text-color: #4b0082; /* Índigo */
+            --bg-color: #f8f8ff; /* Fondo blanco azulado */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+            background-size: 250px 250px;
+        }
+
+        .container {
+            position: relative;
+            background-color: var(--tertiary-color);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            border: 5px solid var(--secondary-color);
+            animation: fadeIn 2s ease-in-out forwards;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .heart-emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+            display: inline-block;
+            color: var(--primary-color);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary-color);
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: slideInFromLeft 1.5s ease-in-out forwards;
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        h2 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--text-color);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            animation: slideInFromRight 1.5s ease-in-out forwards;
+            animation-delay: 0.5s;
+            opacity: 0;
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-align: left;
+            animation: fadeInText 2s ease-in-out forwards;
+            animation-delay: 1s;
+            opacity: 0;
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-top: 30px;
+            text-align: right;
+            animation: fadeInText 2s ease-in-out forwards;
+            animation-delay: 2s;
+            opacity: 0;
+        }
+
+        .flower-animation {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff69b4"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-8h4v4h-4v-4z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0;
+            animation: fall 10s linear infinite;
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="heart-emoji">💖</div>
+    <h1>Para mi hermosa amiga</h1>
+    <h2>No estás sola en esto</h2>
+    <p>Querida Bris,</p>
+    <p>Sé que en este momento te sientes devastada y es totalmente válido que sientas esa tristeza. Me contaste lo que pasó y mi corazón se encoge de saber que alguien tan maravillosa como tú está pasando por algo así. Lo de él, no es un reflejo de tu valor. Es un reflejo de su propia falta de respeto y de la clase de persona que es.</p>
+    <p>Quiero que recuerdes algo muy importante: eres una mujer increíble, llena de luz, de carisma y con un corazón enorme. Tienes un valor que nadie puede quitarte. Él no supo apreciarlo, pero eso no disminuye en lo más mínimo lo que tú eres. El dolor pasará y de esta experiencia saldrás mucho más fuerte. Créeme, esta es una oportunidad para que te reencuentres contigo misma y te des cuenta de lo mucho que vales sin depender de nadie más.</p>
+    <p>Estoy aquí para ti, para escucharte, para reir juntos o simplemente para sentarme en silencio a tu lado. No estás sola en esto y siempre seré tu amigo incondicional. Eres una de las personas más importantes en mi vida y verte sonreír es mi mayor deseo. Pronto, tu corazón sanará y brillará más que nunca.</p>
+    <p class="signature">Con todo mi cariño,<br>Jesús</p>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.querySelector('.container');
+        const numFlowers = 15;
+        for (let i = 0; i < numFlowers; i++) {
+            const flower = document.createElement('div');
+            flower.classList.add('flower-animation');
+            const size = Math.random() * 20 + 30; // Tamaño entre 30px y 50px
+            flower.style.width = `${size}px`;
+            flower.style.height = `${size}px`;
+            flower.style.left = `${Math.random() * 100}vw`;
+            flower.style.animationDuration = `${Math.random() * 5 + 5}s`;
+            flower.style.animationDelay = `${Math.random() * 5}s`;
+            document.body.appendChild(flower);
+        }
+    });
+</script>
+
+</body>
+</html>

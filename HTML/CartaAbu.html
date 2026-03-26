@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Carta para mi Abuelita</title>
+<style>
+:root{
+--bg1:#FFF7EA;
+--bg2:#FFE6F0;
+--accent:#FF6B6B;
+--card:#ffffff;
+--shadow: 0 10px 30px rgba(0,0,0,0.12);
+--radius:18px;
+}
+body{
+margin:0;
+min-height:100vh;
+display:grid;
+place-items:center;
+font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+background: linear-gradient(135deg,var(--bg1),var(--bg2));
+animation: bgShift 12s infinite alternate ease-in-out;
+overflow:hidden;
+-webkit-font-smoothing:antialiased;
+}
+@keyframes bgShift{
+0%{background-position:0% 50%;}
+100%{background-position:100% 50%;}
+}
+.stage{
+width:92%;
+max-width:980px;
+margin:32px;
+display:grid;
+grid-template-columns: 1fr 380px;
+gap:28px;
+align-items:start;
+position:relative;
+z-index:2;
+}
+.card{
+background: linear-gradient(180deg,var(--card), #fff6f8);
+border-radius:var(--radius);
+padding:26px;
+box-shadow:var(--shadow);
+position:relative;
+border:1px solid rgba(255,107,107,0.06);
+}
+h1{margin:0 0 6px 0; font-size:28px; color:#bf2b6c;}
+p.lead{margin:0 0 16px 0; color:#444; line-height:1.5}
+.typing{
+display:inline-block;
+white-space:nowrap;
+overflow:hidden;
+border-right:3px solid rgba(191,43,108,0.9);
+box-sizing:content-box;
+animation: caret 0.8s steps(1) infinite;
+}
+@keyframes caret{50%{border-color:transparent}}
+.gallery{
+display:flex; gap:10px; flex-direction:column; align-items:center;
+}
+.carousel{
+width:100%; max-width:320px; height:240px; border-radius:14px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,0.12);
+border:1px solid rgba(0,0,0,0.04);
+background:#eee;
+position:relative;
+}
+.slides{
+width:100%;
+height:100%;
+position:relative;
+}
+.slides img{width:100%; height:100%; object-fit: contain; position:absolute; left:0; top:0; opacity:0; transform:scale(1.02); transition:opacity 900ms ease, transform 900ms ease; background-color: #f0f0f0;}
+.slides img.active{opacity:1; transform:scale(1)}
+.dots{display:flex; gap:8px; margin-top:10px}
+.dot{width:10px; height:10px; border-radius:50%; background:rgba(0,0,0,0.2); cursor:pointer}
+.dot.active{background:var(--accent)}
+.controls{display:flex; gap:10px; margin-top:12px}
+.btn{padding:8px 12px; border-radius:10px; border:0; cursor:pointer; font-weight:600; box-shadow: 0 6px 14px rgba(191,43,108,0.08); background:linear-gradient(90deg,#ffd7e1,#fff);}
+.envelope{
+perspective:1100px;
+width:100%;
+}
+.letter{
+width:100%; transform-style:preserve-3d; transition: transform 700ms cubic-bezier(.2,.85,.3,1);
+border-radius:12px; overflow:hidden;
+}
+.letter.open{transform:rotateX(-10deg) translateY(-6px)}
+.paper{padding:18px; background:linear-gradient(180deg,#fffefc,#fff6f6);}
+@media (max-width:880px){
+.stage{grid-template-columns:1fr;}
+.gallery{order:-1}
+.carousel{max-width:100%; height:200px}
+}
+.heart{display:inline-block; transform-origin:center; animation:beat 1s infinite ease-in-out}
+@keyframes beat{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+.falling-heart{
+position: fixed;
+top:-30px;
+font-size:24px;
+color:#ff6b6b;
+animation: fall linear forwards;
+z-index:1;
+pointer-events:none;
+}
+@keyframes fall{
+to{transform: translateY(110vh) rotate(360deg); opacity:0;}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+<section class="card" aria-labelledby="titulo">
+<h1 id="titulo">Para mi querida Abuelita <span class="heart">💖</span></h1>
+<p class="lead">Hola abuelita, quiero decirte algo con todo mi cariño. <span id="typed" class="typing"></span></p>
+<div class="envelope" style="margin-top:8px">
+<div class="letter" id="letter">
+<div class="paper">
+<p>Querida abuelita,</p>
+<p>Quiero aprovechar este momento para decirte lo mucho que te quiero y lo importante que eres en mi vida. Desde que era pequeño, tus abrazos han sido mi refugio y tus palabras siempre han sido mi guía. Gracias por enseñarme con paciencia, por contarme historias que me llenan de alegría y por hacer que cada momento contigo sea especial.
+Abuelita, tu amor es un regalo que llevo siempre en mi corazón. Cada sonrisa tuya ilumina mis días y me da fuerza para seguir adelante. Admiro tu bondad, tu sabiduría y la manera en que siempre pones a los demás antes que a ti misma. Eres un ejemplo de vida, y siento una enorme gratitud por tenerte en mi mundo.
+Quiero que sepas que siempre estoy aquí para ti, así como tú has estado para mí. Espero poder devolverte aunque sea un poco de todo el amor y cuidado que me has dado durante tantos años. Gracias por ser mi abuelita, mi amiga y mi inspiración.  </p>
+<p>Con todo mi amor,</p>
+<p><strong>Tu nieto Jesús</strong></p>
+</div>
+</div>
+</div>
+<div class="controls">
+<button class="btn" id="toggleLetter">Abrir/Cerrar carta</button>
+<button class="btn" id="startTyped">Leer mensaje</button>
+</div>
+</section>
+<aside class="gallery card">
+<h2 style="margin-top:2px; margin-bottom:8px; color:#bf2b6c">Recuerdos</h2>
+<div class="carousel" aria-roledescription="carrusel de fotos" id="carousel">
+<div class="slides">
+<div class="slides">
+    <img src="https://i.imgur.com/sVUssqj.jpeg" alt="Foto abuelita cumpleaños" class="active"/>
+    <img src="https://i.imgur.com/lkx091L.jpeg" alt="Foto abuelita con familia"/>
+    <img src="https://i.imgur.com/o6ezIQR.jpeg" alt="Foto abuelita con nieto pequeño"/>
+</div>
+</div>
+</div>
+<div class="dots" id="dots"></div>
+</aside>
+</div>
+<script>
+const msg = 'Eres la mejor abuelita del mundo. Te amo mucho.❤️🫂';
+const typedEl = document.getElementById('typed');
+let i=0; let typingInterval;
+function startTyping(){
+typedEl.textContent = '';
+typedEl.classList.add('typing');
+clearInterval(typingInterval);
+i=0;
+typingInterval = setInterval(()=>{
+if(i>=msg.length){ clearInterval(typingInterval); typedEl.classList.remove('typing'); return; }
+typedEl.textContent += msg.charAt(i);
+i++;
+},45);
+}
+document.getElementById('startTyped').addEventListener('click', startTyping);
+const letter = document.getElementById('letter');
+document.getElementById('toggleLetter').addEventListener('click', ()=>{
+letter.classList.toggle('open');
+});
+const slides = Array.from(document.querySelectorAll('.slides img'));
+const dotsWrap = document.getElementById('dots');
+let current = 0;
+slides.forEach((s, idx)=>{
+const dot = document.createElement('div'); dot.className='dot'; if(idx===0) dot.classList.add('active');
+dot.addEventListener('click', ()=>{ goTo(idx); });
+dotsWrap.appendChild(dot);
+});
+const dots = Array.from(document.querySelectorAll('.dot'));
+function show(idx){
+slides.forEach((s,i)=> s.classList.toggle('active', i===idx));
+dots.forEach((d,i)=> d.classList.toggle('active', i===idx));
+}
+function goTo(idx){ current=idx; show(current); }
+function next(){ current = (current+1) % slides.length; show(current); }
+let slideTimer = setInterval(next, 3500);
+document.getElementById('carousel').addEventListener('mouseenter', ()=> clearInterval(slideTimer));
+document.getElementById('carousel').addEventListener('mouseleave', ()=> slideTimer = setInterval(next,3500));
+window.addEventListener('load', ()=>{
+setTimeout(startTyping, 700);
+setInterval(createHeart, 600);
+});
+function createHeart(){
+const heart = document.createElement('div');
+heart.className = 'falling-heart';
+heart.textContent = '💖';
+heart.style.left = Math.random()*100 + 'vw';
+heart.style.animationDuration = (4+Math.random()*3)+'s';
+document.body.appendChild(heart);
+setTimeout(()=> heart.remove(), 8000);
+}
+</script>
+</body>
+</html>

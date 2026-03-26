@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para la mejor mamá del mundo</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7e9e9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+            overflow-x: hidden;
+            background-image: linear-gradient(135deg, #f7e9e9 0%, #ffebeb 100%);
+            animation: backgroundAnimation 20s infinite alternate;
+        }
+
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            width: 90%;
+            transform: scale(0.9);
+            animation: appear 1s forwards cubic-bezier(0.2, 0.8, 0.2, 1.2);
+            position: relative;
+        }
+
+        @keyframes appear {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        h1 {
+            color: #e67e96;
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: textPop 1.5s ease-out;
+        }
+
+        @keyframes textPop {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 25px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animated-heart {
+            color: #e67e96;
+            font-size: 4em;
+            position: absolute;
+            animation: pulse 2s infinite ease-in-out;
+            opacity: 0.8;
+            top: 10px;
+            right: 20px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        
+        /* Efecto de partículas */
+        .particle {
+            position: absolute;
+            background-color: #f0c9c9;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            animation: particle-fall 5s forwards;
+        }
+
+        @keyframes particle-fall {
+            0% { transform: translateY(-100px) scale(0); opacity: 0; }
+            10% { opacity: 1; transform: scale(1); }
+            100% { transform: translateY(calc(100vh + 100px)) scale(0.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <span class="animated-heart">❤️</span>
+        <h1>Para la mejor mamá del mundo</h1>
+        <p>Hola, mamá.</p>
+        <p>Hoy no es una fecha especial, ni tu cumpleaños ni el Día de la Madre, pero simplemente sentí la necesidad de decirte lo mucho que significas para mí. A veces, en el ajetreo diario, se nos olvida expresar lo que llevamos en el corazón.</p>
+        <p>Quiero que sepas que admiro profundamente tu fuerza, tu resiliencia y la manera en que enfrentas cada desafío con una valentía inquebrantable. Tu capacidad para seguir adelante y mantener una sonrisa, incluso en los momentos difíciles, es una verdadera inspiración para mí y para todos los que te rodean.</p>
+        <p>Eres mi guía, mi apoyo incondicional y mi mayor ejemplo de vida. Gracias por cada sacrificio, por cada consejo y por cada abrazo que siempre me hace sentir en casa. Tu amor me ha moldeado y me ha enseñado a ser la persona que soy hoy.</p>
+        <p>Gracias por todo. <h1>Te amo con todo mi corazón, hoy y siempre. 🌹💝</h1></p>
+    </div>
+
+    <script>
+        // Función para crear partículas
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            document.body.appendChild(particle);
+
+            const size = Math.random() * 10 + 5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}vw`;
+
+            setTimeout(() => {
+                particle.remove();
+            }, 5000);
+        }
+
+        // Crear partículas cada 200ms
+        setInterval(createParticle, 200);
+    </script>
+
+</body>
+</html>

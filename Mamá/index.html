@@ -1,0 +1,323 @@
+<!DOCT<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi Reina ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500&family=Parisienne&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-sobre: #ffafcc;
+            --color-solapa: #ffc2d1;
+            --color-carta: #fffcf2;
+            --color-accent: #fb6f92;
+            --color-musica: #81b29a;
+            --color-cerrar: #b185db;
+            --font-fancy: 'Dancing Script', cursive;
+            --font-elegant: 'Parisienne', cursive;
+        }
+
+        * { box-sizing: border-box; }
+
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background: linear-gradient(-45deg, #fce1e4, #fcf4dd, #ddfac3, #c1f2fb);
+            background-size: 400% 400%;
+            animation: gradiente 20s ease infinite;
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+        }
+
+        @keyframes gradiente {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Partículas de fondo flotando */
+        .confeti {
+            position: absolute; width: 10px; height: 10px;
+            background-color: white; opacity: 0.3;
+            border-radius: 50%; pointer-events: none;
+            animation: flotarParticula 10s infinite linear;
+        }
+
+        @keyframes flotarParticula {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        .instruccion {
+            position: absolute; top: -80px; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 30px; border-radius: 50px;
+            color: var(--color-accent); font-weight: bold;
+            box-shadow: 0 10px 25px rgba(251, 111, 146, 0.2);
+            z-index: 100; animation: rebote 2s infinite;
+            white-space: nowrap; border: 2px solid var(--color-sobre);
+        }
+
+        @keyframes rebote {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-20px); }
+        }
+
+        .sobre-wrapper { position: relative; width: 320px; height: 220px; cursor: pointer; z-index: 10; transition: transform 0.3s; max-width: 90vw; }
+        .sobre-wrapper:hover { transform: scale(1.05); }
+
+        .sobre {
+            position: absolute; bottom: 0; width: 100%; height: 100%;
+            background: var(--color-sobre); border-radius: 0 0 15px 15px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.1); z-index: 20;
+            overflow: hidden;
+        }
+
+        /* Textura del sobre */
+        .sobre::after {
+            content: ""; position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+            background-size: 10px 10px;
+        }
+
+        .sobre::before {
+            content: ""; position: absolute; top: 0; left: 0;
+            border-left: 160px solid transparent; border-right: 160px solid transparent;
+            border-top: 120px solid var(--color-solapa);
+            transform-origin: top; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); z-index: 30;
+        }
+
+        .carta {
+            position: absolute; bottom: 5px; left: 50%;
+            transform: translateX(-50%); width: 90%; height: 180px;
+            background: var(--color-carta); border-radius: 10px;
+            padding: 40px 30px; box-sizing: border-box;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 15; opacity: 0; text-align: center;
+            overflow-y: auto; scrollbar-width: none;
+            background-image: radial-gradient(#e5e5e5 0.5px, transparent 0.5px);
+            background-size: 20px 20px; /* Efecto papel punteado */
+        }
+
+        .abierto .sobre::before { transform: rotateX(180deg); z-index: 10; }
+        .abierto .carta {
+            height: 85vh; width: 95vw; max-width: 500px;
+            bottom: 50%; transform: translate(-50%, 50%);
+            opacity: 1; z-index: 40; box-shadow: 0 30px 70px rgba(0,0,0,0.2);
+        }
+
+        .foto-mama {
+            width: 220px; height: 220px; /* Tamaño corregido: más grande */
+            border-radius: 20px; border: 8px solid white; 
+            object-fit: cover; margin: 0 auto 20px; display: block;
+            box-shadow: 0 15px 35px rgba(251, 111, 146, 0.3);
+            transition: transform 0.5s;
+        }
+        .foto-mama:hover { transform: rotate(5deg) scale(1.1); }
+
+        h1 { font-family: var(--font-elegant); color: var(--color-accent); font-size: 2.8em; margin: 10px 0; }
+
+        #tipeo {
+            font-size: 1.05em; /* Tamaño corregido: letra un poco más pequeña */
+            line-height: 1.8; color: #555;
+            text-align: left; font-family: 'Quicksand', sans-serif;
+            border-left: 3px solid var(--color-sobre); padding-left: 15px;
+        }
+
+        .botones-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            margin-top: 30px; opacity: 0; transition: 1s ease;
+            padding-bottom: 40px;
+        }
+
+        .btn {
+            background: white; color: var(--color-accent); border: 2px solid var(--color-accent);
+            padding: 12px 15px; border-radius: 15px; font-weight: bold;
+            cursor: pointer; transition: 0.3s; font-family: 'Quicksand', sans-serif;
+            font-size: 0.9em;
+        }
+
+        .btn:hover { background: var(--color-accent); color: white; transform: translateY(-3px); }
+
+        .btn-full { grid-column: span 2; }
+        .btn-musica { border-color: var(--color-musica); color: var(--color-musica); }
+        .btn-musica:hover { background: var(--color-musica); }
+
+        .nota-musical { position: absolute; z-index: 100; pointer-events: none; font-size: 30px; }
+        
+        @keyframes flotarNota {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-200px) rotate(45deg); opacity: 0; }
+        }
+
+        @keyframes latido {
+            0% { transform: translate(-50%, 50%) scale(1); }
+            50% { transform: translate(-50%, 50%) scale(1.05); }
+            100% { transform: translate(-50%, 50%) scale(1); }
+        }
+        .abrazo-anim { animation: latido 0.4s ease 4; }
+
+        /* Ajustes para pantallas pequeñas (móviles) */
+        @media (max-width: 400px) {
+            .sobre::before {
+                border-left-width: 45vw;
+                border-right-width: 45vw;
+            }
+            h1 { font-size: 2em; }
+            .foto-mama { width: 160px; height: 160px; }
+            .instruccion { font-size: 0.8em; padding: 10px 20px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <audio id="miMusica" loop>
+        <source src="https://www.dropbox.com/scl/fi/3rs0yxygtgtzbo4f48qv6/cancion.mp3?rlkey=mtsgnp3x560eggqbblhumgu6o&raw=1" type="audio/mpeg">
+    </audio>
+
+    <div class="sobre-wrapper" id="sobreWrapper" onclick="abrirCarta()">
+        <div class="instruccion" id="letrero">Toca para abrir tu sorpresa ✨</div>
+        <div class="sobre"></div>
+        <div class="carta" id="cartaFisica">
+            <div id="contenido" style="opacity: 0;">
+                <img src="https://i.ibb.co/cSh6nHjr/mama.jpg" alt="Mamá" class="foto-mama">
+                <h1>Hola, Mamá ✨</h1>
+                <div id="tipeo"></div>
+                
+                <div class="botones-container" id="botonesInteractivos">
+                    <button class="btn btn-musica btn-full" onclick="controlMusica(event)" id="btnMusica">🎵 Nuestra Canción</button>
+                    <button class="btn" onclick="lluviaCorazones(event)">💖 Te Amo</button>
+                    <button class="btn" onclick="darAbrazo(event)">🫂 Abrazo</button>
+                    <button class="btn btn-full" style="border-color: var(--color-cerrar); color: var(--color-cerrar)" onclick="cerrarCarta(event)">✉️ Guardar con amor</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generar partículas de fondo
+        for(let i=0; i<20; i++) {
+            let confeti = document.createElement('div');
+            confeti.className = 'confeti';
+            confeti.style.left = Math.random() * 100 + 'vw';
+            confeti.style.animationDelay = Math.random() * 10 + 's';
+            confeti.style.backgroundColor = ['#ffafcc', '#bde0fe', '#ffc8dd', '#ffffff'][Math.floor(Math.random()*4)];
+            document.body.appendChild(confeti);
+        }
+
+        const texto = "Querida mamá 💖👩‍👦, \n\nHoy me detuve un momento a pensar en todo lo que hemos vivido 🌈 y sentí la necesidad de decirte algo que, aunque lo sepas, a veces se nos olvida poner en palabras: eres simplemente extraordinaria. 🌟✨🙌\n\nQuiero agradecerte y honrar la forma tan increíble en la que has desempeñado el papel de mamá y papá al mismo tiempo 🛡️👑. Sé que no ha sido un camino fácil 🏔️ y que, en más de una ocasión, habrás sentido el peso del mundo sobre tus hombros 🌍⚖️. Sin embargo, ante mis ojos, siempre lo hiciste ver natural, con una fuerza que solo alguien con un corazón gigante posee. 💪💖✨\n\nAdmiro profundamente lo trabajadora que eres 🐝💼. Te he visto dar el máximo, sacrificar horas de descanso 🌙💤 y levantarte con una sonrisa para que nunca me faltara nada ☀️🍳. Tu ética de trabajo y tu resiliencia son el motor que me impulsa a mí a seguir adelante. 🏎️💨🔥\n\nMás que mi madre, eres mi mayor ejemplo a seguir 👣🌠. Me siento tan orgulloso de ser tu hijo y de poder decir que mi guía en la vida es una mujer valiente, independiente y llena de amor incondicional. 🏆👸❤️\n\nGracias por ser mi refugio 🏰, mi proveedora 🤲, mi maestra 📚 y mi mejor amiga🌷. Todo lo que soy y todo lo que lograré será siempre un reflejo de la maravillosa mujer que me formó. 🌻🎨💎\n\n\nTe amo con toda mi alma. ♾️💞🧿";
+        
+        let index = 0;
+        let estaAbierta = false;
+        let musicaTocando = false;
+
+        function abrirCarta() {
+            if (estaAbierta) return;
+            estaAbierta = true;
+
+            const wrapper = document.getElementById('sobreWrapper');
+            const letrero = document.getElementById('letrero');
+            const audio = document.getElementById('miMusica');
+
+            wrapper.classList.add('abierto');
+            letrero.style.opacity = "0";
+            
+            setTimeout(() => {
+                document.getElementById('contenido').style.opacity = '1';
+                audio.play().catch(() => console.log("Esperando interacción"));
+                iniciarEscritura();
+            }, 800);
+        }
+
+        function iniciarEscritura() {
+            const contenedor = document.getElementById("tipeo");
+            const carta = document.getElementById('cartaFisica');
+            
+            if (index < texto.length && estaAbierta) {
+                let char = texto.charAt(index);
+                contenedor.innerHTML += char === "\n" ? "<br>" : char;
+                index++;
+                carta.scrollTop = carta.scrollHeight;
+                setTimeout(iniciarEscritura, 40);
+            } else {
+                document.getElementById('botonesInteractivos').style.opacity = '1';
+            }
+        }
+
+        function controlMusica(e) {
+            e.stopPropagation();
+            const audio = document.getElementById('miMusica');
+            const btn = document.getElementById('btnMusica');
+            if (audio.paused) {
+                audio.play();
+                btn.innerHTML = "⏸️ Pausar Música";
+                musicaTocando = true;
+                iniciarNotasEfecto();
+            } else {
+                audio.pause();
+                btn.innerHTML = "🎵 Nuestra Canción";
+                musicaTocando = false;
+            }
+        }
+
+        function iniciarNotasEfecto() {
+            if(!musicaTocando) return;
+            const nota = document.createElement('div');
+            nota.className = 'nota-musical';
+            nota.innerHTML = ['✨','🎵','🎶','💓'][Math.floor(Math.random()*4)];
+            nota.style.left = Math.random() * 80 + 10 + 'vw';
+            nota.style.top = '70vh';
+            nota.style.animation = 'flotarNota 3s ease-out forwards';
+            document.body.appendChild(nota);
+            setTimeout(() => { nota.remove(); if(musicaTocando) iniciarNotasEfecto(); }, 1000);
+        }
+
+        function lluviaCorazones(e) {
+            e.stopPropagation();
+            for(let i=0; i<15; i++) {
+                setTimeout(() => {
+                    const p = document.createElement('div');
+                    p.innerHTML = '❤️';
+                    p.style.position = 'fixed';
+                    p.style.left = Math.random() * 100 + 'vw';
+                    p.style.top = '-5vh';
+                    p.style.fontSize = Math.random() * 20 + 20 + 'px';
+                    p.style.zIndex = '1000';
+                    p.style.transition = 'transform 3s linear, opacity 3s';
+                    document.body.appendChild(p);
+                    
+                    setTimeout(() => {
+                        p.style.transform = `translateY(110vh) rotate(${Math.random()*360}deg)`;
+                        p.style.opacity = '0';
+                    }, 50);
+                    setTimeout(() => p.remove(), 3000);
+                }, i * 100);
+            }
+        }
+
+        function darAbrazo(e) {
+            e.stopPropagation();
+            document.getElementById('cartaFisica').classList.add('abrazo-anim');
+            setTimeout(() => document.getElementById('cartaFisica').classList.remove('abrazo-anim'), 1600);
+            lluviaCorazones(e);
+        }
+
+        function cerrarCarta(e) {
+            e.stopPropagation();
+            estaAbierta = false;
+            index = 0;
+            document.getElementById('sobreWrapper').classList.remove('abierto');
+            document.getElementById('tipeo').innerHTML = "";
+            document.getElementById('letrero').style.opacity = "1";
+            document.getElementById('contenido').style.opacity = "0";
+            document.getElementById('miMusica').pause();
+            musicaTocando = false;
+        }
+    </script>
+</body>
+</html>
