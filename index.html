@@ -38,30 +38,31 @@
     <audio id="soundTaskDone" src="assets/task_done.mp3" preload="auto"></audio>
 
     <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="glass w-full max-w-lg rounded-3xl p-10 shadow-2xl shadow-blue-900/20 animate__animated animate__zoomIn">
-            <div class="text-center mb-10">
-                <div class="h-28 w-28 rounded-full border-4 border-white/20 shadow-xl mx-auto mb-6 transform rotate-3 flex items-center justify-center bg-gray-900/50 overflow-hidden">
-                    <img id="loginPhoto" src="assets/logo_tics.jpeg" alt="Login Photo" class="w-full h-full object-cover">
-                </div>
-                <h1 class="text-4xl font-extrabold text-white tracking-tighter">Jesús <span class="text-blue-500">Workspace</span></h1>
-                <p class="text-gray-400 mt-2">Ingresa a tu Workspace Seguro</p>
+    <div class="glass w-full max-w-lg rounded-3xl p-10 shadow-2xl shadow-blue-900/20 animate__animated animate__zoomIn">
+        <div class="text-center mb-10">
+            <div class="h-40 w-40 rounded-full border-4 border-white/20 shadow-2xl mx-auto mb-8 transform rotate-3 flex items-center justify-center bg-gray-900/50 overflow-hidden">
+                <img id="loginPhoto" src="assets/logo_tics.jpeg" alt="Login Photo" class="w-full h-full object-cover">
             </div>
             
-            <form onsubmit="window.handleLogin(event)" class="space-y-6">
-                <div class="relative">
-                    <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
-                    <input type="text" id="loginUser" required placeholder="Usuario" class="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl outline-none text-white focus:border-blue-500 transition-colors">
-                </div>
-                <div class="relative">
-                    <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
-                    <input type="password" id="loginPassword" required placeholder="Contraseña" class="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl outline-none text-white focus:border-blue-500 transition-colors">
-                </div>
-                <button type="submit" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 active:scale-95">
-                    <i data-lucide="log-in" class="w-5 h-5"></i> Iniciar Sesión
-                </button>
-            </form>
+            <h1 class="text-4xl font-extrabold text-white tracking-tighter">Jesús <span class="text-blue-500">Workspace</span></h1>
+            <p class="text-gray-400 mt-2">Ingresa a tu Workspace Seguro</p>
         </div>
+        
+        <form onsubmit="window.handleLogin(event)" class="space-y-6">
+            <div class="relative">
+                <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+                <input type="text" id="loginUser" required placeholder="Usuario" class="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl outline-none text-white focus:border-blue-500 transition-colors">
+            </div>
+            <div class="relative">
+                <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+                <input type="password" id="loginPassword" required placeholder="Contraseña" class="w-full pl-12 pr-4 py-4 bg-gray-900/50 border border-gray-700 rounded-xl outline-none text-white focus:border-blue-500 transition-colors">
+            </div>
+            <button type="submit" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 active:scale-95">
+                <i data-lucide="log-in" class="w-5 h-5"></i> Iniciar Sesión
+            </button>
+        </form>
     </div>
+</div>
 
     <div id="app-screen" class="h-screen w-full flex overflow-hidden">
         <aside class="w-72 glass-dark border-r border-white/5 flex flex-col p-6">
