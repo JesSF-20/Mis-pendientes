@@ -126,7 +126,7 @@
     storageBucket: "pendientes-jose.firebasestorage.app",
     messagingSenderId: "360524230213",
     appId: "1:360524230213:web:b8dac50761aed5feec3d2c",
-    databaseURL: "https://pendientes-jose-default-rtdb.firebaseio.com" 
+    databaseURL: "https://pendientes-jose-default-rtdb.firebaseio.com/" 
   };
 
   // Inicializar Firebase
@@ -230,12 +230,7 @@
         if (emptyState) emptyState.style.display = 'block';
     }
   }
-  // Exponer funciones al objeto window para que los botones del HTML puedan verlas
-window.addTask = addTask;
-window.handleKeyPress = handleKeyPress;
-window.toggleTask = toggleTask;
-window.deleteTask = deleteTask;
-window.clearCompleted = clearCompleted;
+  
 </script>
 </body>
 </html>
